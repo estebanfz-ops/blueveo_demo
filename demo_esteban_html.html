@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLUVEO | Agencia Digital de Alta Velocidad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #9333ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="hero-glow"></div>
+
+    <nav class="fixed w-full z-50 glass py-4 px-6 flex justify-between items-center">
+        <div class="text-2xl font-bold tracking-tighter">BLU<span class="text-blue-500">VEO</span></div>
+        <div class="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-widest">
+            <a href="#servicios" class="hover:text-blue-400 transition">Servicios</a>
+            <a href="#contacto" class="hover:text-blue-400 transition">Contacto</a>
+        </div>
+        <a href="https://wa.me/573000000000"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition shadow-lg shadow-blue-500/20">
+            EMPEZAR YA
+        </a>
+    </nav>
+
+    <section class="h-screen flex flex-col justify-center items-center text-center px-4">
+        <h1 class="text-5xl md:text-8xl font-black mb-6 tracking-tight">
+            TU PYME A <span class="gradient-text">ALTA VELOCIDAD</span>
+        </h1>
+        <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-10 leading-relaxed">
+            Creamos tu ecosistema digital con IA en tiempo récord. Landing pages, automatizaciones y diseño de élite
+            para el mercado colombiano.
+        </p>
+        <div class="flex flex-col md:flex-row gap-4">
+            <a href="#contacto"
+                class="px-10 py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition">
+                Solicitar Demo
+            </a>
+            <div class="px-10 py-4 glass rounded-xl font-bold">
+                Entrega en 7 Días ⚡
+            </div>
+        </div>
+    </section>
+
+    <section id="servicios" class="py-24 px-6 max-w-7xl mx-auto">
+        <h2 class="text-3xl font-bold mb-16 text-center">Soluciones <span class="text-blue-500">Inteligentes</span></h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="glass p-8 rounded-3xl hover:border-blue-500/50 transition">
+                <i class="fa-solid fa-rocket text-4xl text-blue-500 mb-6"></i>
+                <h3 class="text-xl font-bold mb-4">Webs de Alto Impacto</h3>
+                <p class="text-gray-400">Landing pages optimizadas para conversión con stack moderno (Tailwind +
+                    Vercel).</p>
+            </div>
+            <div class="glass p-8 rounded-3xl hover:border-purple-500/50 transition">
+                <i class="fa-solid fa-robot text-4xl text-purple-500 mb-6"></i>
+                <h3 class="text-xl font-bold mb-4">Automatización IA</h3>
+                <p class="text-gray-400">Integración de agentes de IA para atención al cliente y gestión de leads 24/7.
+                </p>
+            </div>
+            <div class="glass p-8 rounded-3xl hover:border-green-500/50 transition">
+                <i class="fa-solid fa-bolt text-4xl text-green-500 mb-6"></i>
+                <h3 class="text-xl font-bold mb-4">Optimización Local</h3>
+                <p class="text-gray-400">Estrategias específicas para PYMES en Colombia. SEO local y conexión con
+                    WhatsApp Business.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="py-24 px-6 bg-[#0a0a0a]">
+        <div class="max-w-3xl mx-auto glass p-10 rounded-3xl">
+            <h2 class="text-3xl font-bold mb-8 text-center">Inicia tu Transformación</h2>
+            <form action="#" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Nombre de la Empresa</label>
+                    <input type="text"
+                        class="w-full bg-white/5 border border-white/10 rounded-lg p-4 focus:border-blue-500 outline-none"
+                        placeholder="Ej. Textiles Medellín">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Correo Electrónico</label>
+                    <input type="email"
+                        class="w-full bg-white/5 border border-white/10 rounded-lg p-4 focus:border-blue-500 outline-none"
+                        placeholder="tu@correo.com">
+                </div>
+                <button class="w-full py-4 bg-blue-600 hover:bg-blue-700 rounded-xl font-bold text-lg transition">
+                    Enviar Información
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <a href="https://wa.me/573000000000"
+        class="fixed bottom-8 right-8 bg-green-500 w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-2xl hover:scale-110 transition z-50">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <footer class="py-10 text-center text-gray-600 text-sm border-t border-white/5">
+        &copy; 2026 BLUVEO. Medellín, Colombia. Actividad 6201 - 7310.
+    </footer>
+
+</body>
+
+</html>
