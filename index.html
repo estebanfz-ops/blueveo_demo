@@ -7,124 +7,181 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap" rel="stylesheet">
     <style>
-        body { background: #000; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glass { background: rgba(255,255,255,0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
-        .gradient-blue { background: linear-gradient(135deg, #3b82f6 0%, #9333ea 100%); }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap');
+        body { background: #030303; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        .glass { background: rgba(255,255,255,0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.08); }
         .text-gradient { background: linear-gradient(to right, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        /* 3D Perspective Effect */
-        .card-3d { perspective: 1000px; }
-        .card-3d-inner { transition: transform 0.6s; transform-style: preserve-3d; }
-        .card-3d:hover .card-3d-inner { transform: rotateY(10deg) rotateX(5deg); }
-
-        /* Custom Slider Style */
-        .slider-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 20px; padding: 20px 0; }
-        .slider-container::-webkit-scrollbar { display: none; }
-        .slide { flex: 0 0 80%; scroll-snap-align: center; }
+        .modal { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; padding: 20px; }
+        .modal.active { display: flex; }
+        input[type="range"]::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: #3b82f6; border-radius: 50%; cursor: pointer; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body>
 
-    <nav class="fixed w-full z-[100] glass py-4 px-6 flex justify-between items-center top-0">
+    <nav class="fixed w-full z-50 glass py-4 px-6 flex justify-between items-center top-0">
         <div class="text-2xl font-extrabold tracking-tighter">BLU<span class="text-blue-500">VEO</span></div>
-        <a href="https://wa.me/573000000000" class="gradient-blue text-white px-6 py-2 rounded-full text-xs font-bold shadow-lg">PROYECTO EN 7 DÍAS</a>
+        <div class="hidden md:flex space-x-8 text-[10px] font-bold uppercase tracking-widest">
+            <a href="#motores" class="hover:text-blue-400">Motores</a>
+            <a href="#precios" class="hover:text-blue-400">Planes</a>
+            <a href="#calculadora" class="hover:text-blue-400">ROI</a>
+        </div>
+        <a href="https://wa.me/573000000000" class="bg-blue-600 text-white px-5 py-2 rounded-full text-[10px] font-black">SOPORTE 24/7</a>
     </nav>
 
-    <section class="h-screen flex flex-col justify-center items-center text-center px-6 relative">
-        <div class="absolute inset-0 z-0 opacity-20" style="background-image: radial-gradient(#3b82f6 1px, transparent 1px); background-size: 40px 40px;"></div>
-        
-        <h1 data-aos="zoom-out" data-aos-duration="1500" class="text-7xl md:text-[120px] font-black leading-none mb-6">
-            VELOCIDAD <br><span class="text-gradient">INFINITA</span>
-        </h1>
-        <p data-aos="fade-up" data-aos-delay="500" class="text-gray-400 text-xl max-w-2xl font-light">
-            Entregamos tu ecosistema digital con IA antes de que tu competencia termine su primera reunión.
-        </p>
+    <section class="min-h-screen flex flex-col justify-center items-center text-center px-6">
+        <h1 data-aos="zoom-in" class="text-6xl md:text-[110px] font-black leading-none mb-6">BLU<span class="text-gradient">VEO</span></h1>
+        <p data-aos="fade-up" data-aos-delay="300" class="text-gray-400 text-xl max-w-2xl font-light">Agencia de servicios digitales inmersivos. Velocidad de despliegue en tiempo récord para el mercado colombiano.</p>
     </section>
 
-    <section class="py-20 px-6">
-        <h2 class="text-center text-3xl font-bold mb-12">Nuestros <span class="text-blue-500">Motores</span></h2>
-        <div class="slider-container">
-            <div class="slide card-3d" data-aos="fade-right">
-                <div class="card-3d-inner glass p-10 rounded-[3rem] h-[400px] flex flex-col justify-center">
-                    <i class="fa-solid fa-bolt-lightning text-5xl text-blue-500 mb-6"></i>
-                    <h3 class="text-3xl font-bold mb-4 italic">Landing Ultra</h3>
-                    <p class="text-gray-400">Páginas que cargan en menos de 1 segundo. Cero fricción, 100% conversión.</p>
-                </div>
+    <section id="motores" class="py-24 px-6 max-w-7xl mx-auto">
+        <h2 class="text-center text-4xl font-black mb-16 italic" data-aos="fade-up">NUESTROS MOTORES</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div data-aos="fade-right" class="glass p-10 rounded-[2.5rem] border-blue-500/20 hover:border-blue-500 transition-all group">
+                <i class="fa-solid fa-bolt text-4xl text-blue-500 mb-6"></i>
+                <h3 class="text-2xl font-bold mb-4">Turbo Landing</h3>
+                <p class="text-sm text-gray-500 mb-8">Optimización extrema de carga y conversión.</p>
+                <button onclick="openModal('modal-turbo')" class="w-full py-3 bg-white/5 hover:bg-white/10 rounded-xl font-bold text-xs transition">DETALLES TÉCNICOS</button>
             </div>
-            <div class="slide card-3d" data-aos="fade-right" data-aos-delay="200">
-                <div class="card-3d-inner glass p-10 rounded-[3rem] h-[400px] flex flex-col justify-center border-blue-500/30">
-                    <i class="fa-solid fa-robot text-5xl text-purple-500 mb-6"></i>
-                    <h3 class="text-3xl font-bold mb-4 italic">Cerebro IA</h3>
-                    <p class="text-gray-400">Automatizamos tu WhatsApp y CRM para que vendas mientras duermes.</p>
+            <div data-aos="fade-up" class="glass p-10 rounded-[2.5rem] border-purple-500/20 hover:border-purple-500 transition-all group text-center">
+                <i class="fa-solid fa-robot text-4xl text-purple-500 mb-6"></i>
+                <h3 class="text-2xl font-bold mb-4">Cerebro IA</h3>
+                <p class="text-sm text-gray-500 mb-8">Automatización de flujos con agentes inteligentes.</p>
+                <button onclick="openModal('modal-ia')" class="w-full py-3 bg-purple-600 hover:bg-purple-500 rounded-xl font-bold text-xs transition text-white">DETALLES TÉCNICOS</button>
+            </div>
+            <div data-aos="fade-left" class="glass p-10 rounded-[2.5rem] border-green-500/20 hover:border-green-500 transition-all group text-right">
+                <i class="fa-solid fa-rocket text-4xl text-green-500 mb-6"></i>
+                <h3 class="text-2xl font-bold mb-4">Express Shop</h3>
+                <p class="text-sm text-gray-500 mb-8">E-commerce listo para vender en 7 días.</p>
+                <button onclick="openModal('modal-shop')" class="w-full py-3 bg-white/5 hover:bg-white/10 rounded-xl font-bold text-xs transition">DETALLES TÉCNICOS</button>
+            </div>
+        </div>
+    </section>
+
+    <div id="modal-turbo" class="modal">
+        <div class="glass max-w-lg p-12 rounded-[3rem] relative">
+            <button onclick="closeModal()" class="absolute top-8 right-8 text-gray-500 hover:text-white"><i class="fa-solid fa-xmark text-2xl"></i></button>
+            <h3 class="text-3xl font-black mb-6 text-blue-400">Turbo Landing</h3>
+            <p class="text-gray-400 leading-relaxed">Nuestra arquitectura elimina el código innecesario. Incluye SEO técnico avanzado, integración directa con WhatsApp y una velocidad de carga menor a 1.2 segundos para maximizar la retención de clientes en móviles.</p>
+        </div>
+    </div>
+
+    <div id="modal-ia" class="modal">
+        <div class="glass max-w-lg p-12 rounded-[3rem] relative">
+            <button onclick="closeModal()" class="absolute top-8 right-8 text-gray-500 hover:text-white"><i class="fa-solid fa-xmark text-2xl"></i></button>
+            <h3 class="text-3xl font-black mb-6 text-purple-400">Cerebro IA</h3>
+            <p class="text-gray-400 leading-relaxed">Implementamos agentes de inteligencia artificial que no solo responden dudas, sino que califican leads y agendan citas automáticamente en tu CRM o calendario de Google.</p>
+        </div>
+    </div>
+
+    <div id="modal-shop" class="modal">
+        <div class="glass max-w-lg p-12 rounded-[3rem] relative">
+            <button onclick="closeModal()" class="absolute top-8 right-8 text-gray-500 hover:text-white"><i class="fa-solid fa-xmark text-2xl"></i></button>
+            <h3 class="text-3xl font-black mb-6 text-green-400">Express Shop</h3>
+            <p class="text-gray-400 leading-relaxed">Configuración rápida de inventario, integración con pasarelas como Wompi o ePayco y diseño enfocado en la experiencia de compra fluida desde el celular.</p>
+        </div>
+    </div>
+
+    <section id="precios" class="py-24 px-6 bg-white/5">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-center text-4xl font-black mb-16 italic">PLANES DE INVERSIÓN</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div data-aos="fade-up" class="glass p-10 rounded-[3rem] border-white/5">
+                    <h3 class="text-xl font-bold mb-2">ESENCIAL</h3>
+                    <div class="text-4xl font-black mb-8">$1.800.000 <span class="text-xs text-gray-500 font-normal">COP</span></div>
+                    <ul class="space-y-4 text-sm text-gray-400 mb-10">
+                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> Landing Page (1 Sección)</li>
+                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> Botón WhatsApp Directo</li>
+                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> Entrega: 4 Días Hábiles</li>
+                    </ul>
+                    <a href="#" class="block w-full py-4 text-center border border-white/10 rounded-2xl font-bold hover:bg-white hover:text-black transition">ELEGIR</a>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="200" class="glass p-10 rounded-[3rem] border-blue-500/50 scale-105 relative">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 px-4 py-1 rounded-full text-[10px] font-bold">RECOMENDADO</div>
+                    <h3 class="text-xl font-bold mb-2">IMPULSO</h3>
+                    <div class="text-4xl font-black mb-8 text-blue-400">$2.500.000 <span class="text-xs text-gray-500 font-normal text-white">COP</span></div>
+                    <ul class="space-y-4 text-sm text-gray-200 mb-10">
+                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> Web Multi-sección (5)</li>
+                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> IA Chatbot Básico</li>
+                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> Entrega: 7 Días Hábiles</li>
+                    </ul>
+                    <a href="#" class="block w-full py-4 text-center bg-blue-600 rounded-2xl font-bold hover:bg-blue-500 transition shadow-lg shadow-blue-500/20">ELEGIR</a>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="400" class="glass p-10 rounded-[3rem] border-white/5">
+                    <h3 class="text-xl font-bold mb-2">DOMINIO</h3>
+                    <div class="text-4xl font-black mb-8">$4.500.000 <span class="text-xs text-gray-500 font-normal">COP</span></div>
+                    <ul class="space-y-4 text-sm text-gray-400 mb-10">
+                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> E-commerce Completo</li>
+                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> IA Ops Avanzada</li>
+                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> Soporte VIP 6 Meses</li>
+                    </ul>
+                    <a href="#" class="block w-full py-4 text-center border border-white/10 rounded-2xl font-bold hover:bg-white hover:text-black transition">ELEGIR</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-24 px-6 bg-white/5">
-        <div class="max-w-4xl mx-auto">
-            <div class="glass p-12 rounded-[3rem] text-center border-t-2 border-blue-500">
-                <h2 class="text-4xl font-black mb-10">Calculadora de <span class="text-blue-400">Impacto</span></h2>
-                
-                <div class="space-y-12 mb-12 text-left">
-                    <div>
-                        <label class="block text-sm text-gray-500 mb-4 uppercase font-bold tracking-widest text-center">Inversión Total: <span class="text-white">$1.500.000 COP</span></label>
-                        <input type="range" id="leads" min="10" max="500" value="50" class="w-full h-2 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-blue-500">
-                        <p class="text-center mt-2 text-xs text-blue-400">Si generamos <span id="leads-val">50</span> leads mensuales...</p>
-                    </div>
-                </div>
+    <section id="calculadora" class="py-24 px-6 max-w-4xl mx-auto">
+        <div class="glass p-12 rounded-[4rem] text-center border-t-4 border-green-500/50">
+            <h2 class="text-3xl font-black mb-8">SIMULADOR DE RENTABILIDAD</h2>
+            <p class="text-xs text-gray-500 mb-12 uppercase tracking-widest">Basado en una ganancia neta de $25,000 COP por venta</p>
+            
+            <div class="mb-12">
+                <input type="range" id="leads" min="10" max="1000" value="100" class="w-full h-1 bg-gray-800 rounded-lg appearance-none cursor-pointer">
+                <p class="mt-6 text-gray-400 font-bold"><span id="leads-val" class="text-blue-400 text-2xl">100</span> Ventas Proyectadas / Mes</p>
+            </div>
 
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="p-8 bg-black/50 rounded-3xl">
-                        <p class="text-gray-500 text-xs mb-2">RETORNO ESTIMADO (MENSUAL)</p>
-                        <p id="roi-result" class="text-5xl font-black text-green-400">$0</p>
-                    </div>
-                    <div class="p-8 bg-black/50 rounded-3xl flex flex-col justify-center">
-                        <p class="text-xs text-gray-400 italic">"La web se paga sola en el primer mes de operación."</p>
-                    </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-black/40 p-8 rounded-[2rem]">
+                    <p class="text-[10px] text-gray-500 mb-2 uppercase">Ganancia Neta Mensual</p>
+                    <p id="roi-result" class="text-4xl font-black text-green-400">$0</p>
+                </div>
+                <div class="bg-black/40 p-8 rounded-[2rem]">
+                    <p class="text-[10px] text-gray-500 mb-2 uppercase">Estado de Inversión</p>
+                    <p id="roi-status" class="text-xs italic text-gray-400">Calculando...</p>
                 </div>
             </div>
         </div>
     </section>
 
     <section class="py-32 px-6 text-center">
-        <div data-aos="flip-up" class="max-w-2xl mx-auto border-2 border-dashed border-blue-500/50 p-16 rounded-[4rem]">
-            <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-[0_0_50px_rgba(59,130,246,0.5)]">
-                <i class="fa-solid fa-clock-rotate-left text-3xl"></i>
-            </div>
-            <h2 class="text-4xl font-black mb-6 italic">Garantía BLUVEO 7D</h2>
-            <p class="text-gray-400 leading-relaxed mb-8">
-                Si tu proyecto no está desplegado en **7 días hábiles**, el mantenimiento y soporte técnico de los primeros **3 meses corre por nuestra cuenta.**
-            </p>
-            <div class="text-[10px] text-gray-600 uppercase tracking-[0.3em]">Sin letras chiquitas. Solo velocidad.</div>
+        <div data-aos="flip-down" class="max-w-xl mx-auto p-12 rounded-[3rem] border-2 border-dashed border-blue-500/30">
+            <i class="fa-solid fa-shield-halved text-5xl text-blue-500 mb-6"></i>
+            <h2 class="text-3xl font-black mb-4 italic">GARANTÍA 7D</h2>
+            <p class="text-gray-400 text-sm mb-6">Si no tienes tu despliegue funcional en 7 días hábiles, te entregamos el código y el soporte técnico de mantenimiento es 100% gratuito por 6 meses.</p>
         </div>
     </section>
 
-    <a href="https://wa.me/573176990759" class="fixed bottom-10 right-10 bg-green-500 w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(34,197,94,0.4)] hover:scale-110 transition-all z-[200]">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
-
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Inicializar Animaciones
-        AOS.init({ once: true });
+        AOS.init({ once: true, duration: 1000 });
 
-        // Lógica de la Calculadora
+        // Función Modales
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); }
+
+        // Lógica Calculadora ROI ($25,000 por venta)
         const slider = document.getElementById('leads');
         const leadsVal = document.getElementById('leads-val');
         const roiResult = document.getElementById('roi-result');
+        const roiStatus = document.getElementById('roi-status');
 
         slider.oninput = function() {
-            leadsVal.innerHTML = this.value;
-            // Cálculo simple: Cada lead vale $200.000 COP y cerramos el 5%
-            let revenue = (this.value * 0.05) * 500000; 
-            roiResult.innerHTML = "$" + revenue.toLocaleString('es-CO');
+            let numVentas = parseInt(this.value);
+            leadsVal.innerHTML = numVentas;
+            let totalProfit = numVentas * 25000;
+            roiResult.innerHTML = "$" + totalProfit.toLocaleString('es-CO');
+            
+            // Lógica de recuperación de inversión (asumiendo plan Impulso de $2.5M)
+            if (totalProfit >= 2500000) {
+                roiStatus.innerHTML = "✨ Inversión Recuperada en 1 Mes";
+                roiStatus.classList.add('text-green-400');
+            } else {
+                roiStatus.innerHTML = "Recuperación en curso...";
+                roiStatus.classList.remove('text-green-400');
+            }
         };
-        // Ejecutar al inicio
         slider.oninput();
     </script>
-
 </body>
 </html>
