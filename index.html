@@ -61,11 +61,21 @@
         /* Cart badge */
         .cart-badge { position: absolute; top: -7px; right: -7px; background: #C48C5E; color: #F7F5F0; font-size: 10px; font-weight: 500; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
-        /* Google Translate */
-        .goog-te-gadget { font-size: 0 !important; }
-        .goog-te-gadget select { font-size: 11px !important; border: 1px solid #EAE8E3; background: transparent; color: #4A4F55; padding: 4px 8px; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; outline: none; }
+        /* Suppress Google Translate native chrome */
+        .goog-te-banner-frame, .VIpgJd-ZVi9od-aZ2wEe-wOHMyf { display: none !important; }
         body > .skiptranslate { display: none !important; }
         body { top: 0 !important; }
+        #google_translate_element { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; overflow: hidden; }
+
+        /* Custom language switcher */
+        #lang-switcher { position: relative; }
+        #lang-trigger { display: flex; align-items: center; gap: 6px; font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4A4F55; background: transparent; border: 1px solid #EAE8E3; padding: 7px 12px; cursor: pointer; transition: border-color 0.2s, color 0.2s; white-space: nowrap; }
+        #lang-trigger:hover { border-color: #C48C5E; color: #C48C5E; }
+        #lang-menu { display: none; position: absolute; right: 0; top: calc(100% + 4px); background: #F7F5F0; border: 1px solid #EAE8E3; min-width: 130px; z-index: 60; box-shadow: 0 8px 24px rgba(28,32,38,0.1); }
+        #lang-menu.open { display: block; }
+        #lang-menu button { display: block; width: 100%; text-align: left; padding: 9px 14px; font-size: 11px; font-family: 'Inter', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: #4A4F55; background: transparent; border: none; cursor: pointer; transition: background 0.15s, color 0.15s; }
+        #lang-menu button:hover { background: #EAE8E3; color: #1C2026; }
+        #lang-menu button.is-active { color: #C48C5E; font-weight: 500; }
 
         /* Logo upload */
         .logo-upload-area { border: 1px dashed #E2C2B3; padding: 10px; text-align: center; cursor: pointer; transition: background 0.2s ease; min-height: 52px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; }
@@ -86,10 +96,6 @@
 
         /* Demo banner */
         .demo-banner { background: #C48C5E; color: #F7F5F0; font-size: 10px; text-align: center; letter-spacing: 0.18em; text-transform: uppercase; padding: 7px; font-family: 'Inter', sans-serif; }
-
-        /* Translate button wrapper */
-        #translate-btn-wrapper button { font-size: 11px; border: 1px solid #EAE8E3; background: transparent; color: #4A4F55; padding: 5px 12px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; outline: none; display: flex; align-items: center; gap: 6px; transition: border-color 0.2s; }
-        #translate-btn-wrapper button:hover { border-color: #C48C5E; color: #C48C5E; }
     </style>
     <script type="text/javascript">
         function googleTranslateElementInit() {
@@ -213,7 +219,23 @@
                 <a href="#products" class="hover:text-ochre transition-colors">Products</a>
             </nav>
             <div class="flex items-center gap-4">
-                <div id="google_translate_element" class="hidden md:block"></div>
+                <!-- Custom language switcher (triggers hidden Google Translate) -->
+                <div id="lang-switcher" class="hidden md:block">
+                    <button id="lang-trigger" onclick="toggleLangMenu()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+                        <span id="lang-label">EN</span>
+                    </button>
+                    <div id="lang-menu">
+                        <button onclick="setLang('en','EN')">🇺🇸  English</button>
+                        <button onclick="setLang('es','ES')">🇨🇴  Español</button>
+                        <button onclick="setLang('fr','FR')">🇫🇷  Français</button>
+                        <button onclick="setLang('de','DE')">🇩🇪  Deutsch</button>
+                        <button onclick="setLang('it','IT')">🇮🇹  Italiano</button>
+                        <button onclick="setLang('pt','PT')">🇧🇷  Português</button>
+                    </div>
+                </div>
+                <!-- Hidden Google Translate engine -->
+                <div id="google_translate_element"></div>
                 <button onclick="toggleCart()" class="relative text-graphite hover:text-ink transition-colors p-1" aria-label="Open cart">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                     <span class="cart-badge" id="cart-count" style="display:none">0</span>
@@ -390,8 +412,8 @@
                     <div class="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-ink"></div>
 
                     <div id="sheets-notice" class="bg-ochre/10 border border-ochre/30 p-4 mb-8 text-xs text-graphite leading-relaxed">
-                        <strong class="text-ochre uppercase tracking-wider">Google Sheets Not Connected</strong><br>
-                        Submissions are logged to the browser console until you paste your Apps Script URL. See the setup guide below.
+                        <strong class="text-ochre uppercase tracking-wider block mb-1">Connect to Google Sheets — Free, No API Key Needed</strong>
+                        Google Apps Script (already built into every Google account) is the easiest path. It's completely free, has generous limits (20,000 submissions/day), and requires zero paid services. Just open your Google Sheet → Extensions → Apps Script → paste the code from the setup guide below → deploy it as a Web App → copy the URL → paste it into <code class="bg-white/60 px-1">APPS_SCRIPT_URL</code> in this file. That's it. Submissions will then appear in your Sheet automatically.
                     </div>
 
                     <form id="inquiry-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -600,27 +622,27 @@
     // ── PRODUCTS ───────────────────────────────────────────────
     const PRODUCTS = [
         { id:'tee-001', name:'Classic Jersey T-Shirt', category:'Basics', price:18500, minQty:50, stock:2000,
-          img:'https://placehold.co/480x560/EAE8E3/4A4F55?text=Classic+T-Shirt',
+          img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=750&fit=crop&q=80&auto=format',
           desc:'180gsm combed cotton. Crew neck, set-in sleeve. Available in 15 colorways.',
           specs:['180gsm Combed Cotton','Sizes XS–3XL','MOQ: 50 units'] },
         { id:'hoodie-001', name:'French Terry Hoodie', category:'Sweatshirts', price:45000, minQty:30, stock:800,
-          img:'https://placehold.co/480x560/2A3441/EAE8E3?text=French+Terry+Hoodie',
+          img:'https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=600&h=750&fit=crop&q=80&auto=format',
           desc:'320gsm French terry loop. Kangaroo pocket, ribbed cuffs and hem.',
           specs:['320gsm French Terry','Sizes XS–2XL','MOQ: 30 units'] },
         { id:'chino-001', name:'Slim-Cut Chino Trouser', category:'Bottoms', price:52000, minQty:40, stock:600,
-          img:'https://placehold.co/480x560/C48C5E/F7F5F0?text=Slim+Chino',
+          img:'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=600&h=750&fit=crop&q=80&auto=format',
           desc:'98% Cotton 2% Elastane twill. YKK hardware. Slim taper from seat to ankle.',
           specs:['98% Cotton / 2% Elastane','Sizes 28–40','MOQ: 40 units'] },
         { id:'jacket-001', name:'Structured Denim Jacket', category:'Outerwear', price:78000, minQty:25, stock:400,
-          img:'https://placehold.co/480x560/1C2026/EAE8E3?text=Denim+Jacket',
+          img:'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=600&h=750&fit=crop&q=80&auto=format',
           desc:'12oz selvedge denim. Structured shoulder, chest pockets, brass hardware.',
           specs:['12oz Selvedge Denim','Sizes XS–XL','MOQ: 25 units'] },
         { id:'polo-001', name:'Mercerized Polo Shirt', category:'Formal', price:28500, minQty:50, stock:1200,
-          img:'https://placehold.co/480x560/E2C2B3/1C2026?text=Polo+Shirt',
+          img:'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=600&h=750&fit=crop&q=80&auto=format',
           desc:'220gsm mercerized piqué. 3-button placket. Ideal for corporate branding.',
           specs:['220gsm Mercerized Piqué','Sizes XS–3XL','MOQ: 50 units'] },
         { id:'cargo-001', name:'Technical Cargo Short', category:'Bottoms', price:35000, minQty:40, stock:700,
-          img:'https://placehold.co/480x560/4A4F55/F7F5F0?text=Cargo+Short',
+          img:'https://images.unsplash.com/photo-1591195853828-11db59a44f43?w=600&h=750&fit=crop&q=80&auto=format',
           desc:'210gsm ripstop nylon. 6 pockets, zip details. DWR water-resistant finish.',
           specs:['210gsm Ripstop Nylon','Sizes 28–38','MOQ: 40 units'] }
     ];
@@ -864,6 +886,32 @@
         s.classList.toggle('visible');
         if (s.classList.contains('visible')) { renderInventoryTable(); s.scrollIntoView({behavior:'smooth',block:'start'}); }
     }
+
+    // ── LANGUAGE SWITCHER ────────────────────────────────────────
+    function toggleLangMenu() {
+        document.getElementById('lang-menu').classList.toggle('open');
+    }
+    function setLang(langCode, label) {
+        document.getElementById('lang-label').textContent = label;
+        document.getElementById('lang-menu').classList.remove('open');
+        document.querySelectorAll('#lang-menu button').forEach(b => b.classList.remove('is-active'));
+        event.currentTarget.classList.add('is-active');
+        // Fire Google Translate combo change
+        const tryTranslate = (attempts) => {
+            const select = document.querySelector('.goog-te-combo');
+            if (select) {
+                select.value = langCode === 'en' ? '' : langCode;
+                select.dispatchEvent(new Event('change'));
+            } else if (attempts > 0) {
+                setTimeout(() => tryTranslate(attempts - 1), 600);
+            }
+        };
+        tryTranslate(5);
+    }
+    document.addEventListener('click', e => {
+        const sw = document.getElementById('lang-switcher');
+        if (sw && !sw.contains(e.target)) document.getElementById('lang-menu').classList.remove('open');
+    });
 
     // ── SHEETS NOTICE ─────────────────────────────────────────────
     function checkSheetsConnection() {
