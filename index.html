@@ -226,12 +226,12 @@
                         <span id="lang-label">EN</span>
                     </button>
                     <div id="lang-menu">
-                        <button onclick="setLang('en','EN')">🇺🇸  English</button>
-                        <button onclick="setLang('es','ES')">🇨🇴  Español</button>
-                        <button onclick="setLang('fr','FR')">🇫🇷  Français</button>
-                        <button onclick="setLang('de','DE')">🇩🇪  Deutsch</button>
-                        <button onclick="setLang('it','IT')">🇮🇹  Italiano</button>
-                        <button onclick="setLang('pt','PT')">🇧🇷  Português</button>
+                        <button onclick="setLang('en','EN',this)">🇺🇸  English</button>
+                        <button onclick="setLang('es','ES',this)">🇨🇴  Español</button>
+                        <button onclick="setLang('fr','FR',this)">🇫🇷  Français</button>
+                        <button onclick="setLang('de','DE',this)">🇩🇪  Deutsch</button>
+                        <button onclick="setLang('it','IT',this)">🇮🇹  Italiano</button>
+                        <button onclick="setLang('pt','PT',this)">🇧🇷  Português</button>
                     </div>
                 </div>
                 <!-- Hidden Google Translate engine -->
@@ -517,66 +517,6 @@
             </div>
         </section>
 
-        <!-- GOOGLE SHEETS SETUP GUIDE -->
-        <section class="pb-20 px-6 md:px-12 max-w-4xl mx-auto">
-            <details class="border border-concrete">
-                <summary class="p-6 cursor-pointer text-xs uppercase tracking-widest font-medium text-graphite hover:text-ink transition-colors list-none flex items-center justify-between">
-                    <span>Google Sheets Setup — Connect Forms in 5 Steps</span>
-                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
-                <div class="px-6 pb-6 text-sm text-graphite font-light space-y-3 border-t border-concrete pt-5">
-                    <p class="font-medium text-ink text-xs uppercase tracking-wider">Follow these 5 steps — takes about 3 minutes:</p>
-                    <ol class="space-y-3 list-decimal list-inside text-sm">
-                        <li>Go to <strong>sheets.google.com</strong> → create a new spreadsheet → name it <em>Kina Studio Data</em></li>
-                        <li>Rename the first tab to <strong>Inquiries</strong>. Add two more tabs named <strong>Orders</strong> and <strong>Inventory</strong></li>
-                        <li>Click <strong>Extensions → Apps Script</strong>. Delete any existing code and paste the script below</li>
-                        <li>Click <strong>Save</strong> → <strong>Deploy → New Deployment</strong> → type: <em>Web App</em> → Execute as: <em>Me</em> → Access: <em>Anyone</em> → Deploy → copy the URL</li>
-                        <li>In this HTML file find <code>const APPS_SCRIPT_URL = ''</code> and paste the URL between the quotes. Save. Done!</li>
-                    </ol>
-                    <div class="bg-ink text-linen p-5 font-mono text-[11px] overflow-x-auto leading-relaxed mt-4 rounded-sm">
-<pre>function doPost(e) {
-  try {
-    var d = JSON.parse(e.postData.contents);
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-
-    if (d.type === 'inquiry') {
-      var s = ss.getSheetByName('Inquiries');
-      if (s.getLastRow() === 0)
-        s.appendRow(['Timestamp','Brand','Contact','Email','Phone',
-          'Country','Product Type','Quantity','Budget','Timeline',
-          'Contact Method','Details']);
-      s.appendRow([new Date(), d.brand, d.contactName, d.email,
-        d.phone, d.country, d.productType, d.quantity,
-        d.budget, d.timeline, d.contactMethod, d.details]);
-    }
-
-    if (d.type === 'order') {
-      var o = ss.getSheetByName('Orders');
-      if (o.getLastRow() === 0)
-        o.appendRow(['Timestamp','Brand','Email','Items','Total COP']);
-      o.appendRow([new Date(), d.brand, d.email, d.items, d.total]);
-
-      var inv = ss.getSheetByName('Inventory');
-      if (inv.getLastRow() === 0)
-        inv.appendRow(['Product','Units Ordered','Logged At']);
-      JSON.parse(d.items).forEach(function(item) {
-        inv.appendRow([item.name, item.qty, new Date()]);
-      });
-    }
-
-    return ContentService
-      .createTextOutput(JSON.stringify({status:'ok'}))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch(err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({status:'error',msg:err.toString()}))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}</pre>
-                    </div>
-                </div>
-            </details>
-        </section>
     </main>
 
     <!-- FOOTER -->
@@ -622,27 +562,27 @@
     // ── PRODUCTS ───────────────────────────────────────────────
     const PRODUCTS = [
         { id:'tee-001', name:'Classic Jersey T-Shirt', category:'Basics', price:18500, minQty:50, stock:2000,
-          img:'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&h=750&fit=crop&q=80&auto=format',
+          img:'https://picsum.photos/seed/kina-tee/600/750',
           desc:'180gsm combed cotton. Crew neck, set-in sleeve. Available in 15 colorways.',
           specs:['180gsm Combed Cotton','Sizes XS–3XL','MOQ: 50 units'] },
         { id:'hoodie-001', name:'French Terry Hoodie', category:'Sweatshirts', price:45000, minQty:30, stock:800,
-          img:'https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=600&h=750&fit=crop&q=80&auto=format',
+          img:'https://picsum.photos/seed/kina-hoodie/600/750',
           desc:'320gsm French terry loop. Kangaroo pocket, ribbed cuffs and hem.',
           specs:['320gsm French Terry','Sizes XS–2XL','MOQ: 30 units'] },
         { id:'chino-001', name:'Slim-Cut Chino Trouser', category:'Bottoms', price:52000, minQty:40, stock:600,
-          img:'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&h=750&fit=crop&q=80&auto=format',
+          img:'https://picsum.photos/seed/kina-chino/600/750',
           desc:'98% Cotton 2% Elastane twill. YKK hardware. Slim taper from seat to ankle.',
           specs:['98% Cotton / 2% Elastane','Sizes 28–40','MOQ: 40 units'] },
         { id:'jacket-001', name:'Structured Denim Jacket', category:'Outerwear', price:78000, minQty:25, stock:400,
-          img:'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=600&h=750&fit=crop&q=80&auto=format',
+          img:'https://picsum.photos/seed/kina-jacket/600/750',
           desc:'12oz selvedge denim. Structured shoulder, chest pockets, brass hardware.',
           specs:['12oz Selvedge Denim','Sizes XS–XL','MOQ: 25 units'] },
         { id:'polo-001', name:'Mercerized Polo Shirt', category:'Formal', price:28500, minQty:50, stock:1200,
-          img:'https://images.unsplash.com/photo-1625910513106-1898ff7c7c1e?w=600&h=750&fit=crop&q=80&auto=format',
+          img:'https://picsum.photos/seed/kina-polo/600/750',
           desc:'220gsm mercerized piqué. 3-button placket. Ideal for corporate branding.',
           specs:['220gsm Mercerized Piqué','Sizes XS–3XL','MOQ: 50 units'] },
         { id:'cargo-001', name:'Technical Cargo Short', category:'Bottoms', price:35000, minQty:40, stock:700,
-          img:'https://images.unsplash.com/photo-1562183241-840b8af0721e?w=600&h=750&fit=crop&q=80&auto=format',
+          img:'https://picsum.photos/seed/kina-cargo/600/750',
           desc:'210gsm ripstop nylon. 6 pockets, zip details. DWR water-resistant finish.',
           specs:['210gsm Ripstop Nylon','Sizes 28–38','MOQ: 40 units'] }
     ];
@@ -891,23 +831,35 @@
     function toggleLangMenu() {
         document.getElementById('lang-menu').classList.toggle('open');
     }
-    function setLang(langCode, label) {
+
+    function setLang(langCode, label, btn) {
         document.getElementById('lang-label').textContent = label;
         document.getElementById('lang-menu').classList.remove('open');
         document.querySelectorAll('#lang-menu button').forEach(b => b.classList.remove('is-active'));
-        event.currentTarget.classList.add('is-active');
-        // Fire Google Translate combo change
-        const tryTranslate = (attempts) => {
-            const select = document.querySelector('.goog-te-combo');
-            if (select) {
-                select.value = langCode === 'en' ? '' : langCode;
-                select.dispatchEvent(new Event('change'));
-            } else if (attempts > 0) {
-                setTimeout(() => tryTranslate(attempts - 1), 600);
-            }
-        };
-        tryTranslate(5);
+        if (btn) btn.classList.add('is-active');
+
+        // Set Google Translate cookie and reload — reliable on all hosts including Vercel
+        const host = location.hostname;
+        if (langCode === 'en') {
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.' + host;
+        } else {
+            document.cookie = 'googtrans=/en/' + langCode + '; path=/';
+            document.cookie = 'googtrans=/en/' + langCode + '; path=/; domain=.' + host;
+        }
+        location.reload();
     }
+
+    // Restore active lang label from cookie on page load
+    (function restoreLangState() {
+        const match = document.cookie.match(/googtrans=\/en\/([a-z]{2})/);
+        if (match) {
+            const code = match[1].toUpperCase();
+            const label = document.getElementById('lang-label');
+            if (label) label.textContent = code;
+        }
+    })();
+
     document.addEventListener('click', e => {
         const sw = document.getElementById('lang-switcher');
         if (sw && !sw.contains(e.target)) document.getElementById('lang-menu').classList.remove('open');
@@ -960,4 +912,3 @@
     </script>
 </body>
 </html>
-
