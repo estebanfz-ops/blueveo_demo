@@ -65,7 +65,7 @@
         .goog-te-banner-frame, .VIpgJd-ZVi9od-aZ2wEe-wOHMyf { display: none !important; }
         body > .skiptranslate { display: none !important; }
         body { top: 0 !important; }
-        #google_translate_element { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; overflow: hidden; }
+        #google_translate_element { position: fixed; top: -999px; left: -999px; width: 300px; }
 
         /* Custom language switcher */
         #lang-switcher { position: relative; }
@@ -617,12 +617,12 @@
     <script>
     // ── CONFIG ─────────────────────────────────────────────────
     // Paste your Google Apps Script deployment URL here after setup
-    const APPS_SCRIPT_URL = '';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyP0eTNc27xf62dlbMmras_5RCqOoQUbBbffVjNFV4Q-dZawuwNKv26GTds9pLbpLod/exec';
 
     // ── PRODUCTS ───────────────────────────────────────────────
     const PRODUCTS = [
         { id:'tee-001', name:'Classic Jersey T-Shirt', category:'Basics', price:18500, minQty:50, stock:2000,
-          img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=750&fit=crop&q=80&auto=format',
+          img:'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&h=750&fit=crop&q=80&auto=format',
           desc:'180gsm combed cotton. Crew neck, set-in sleeve. Available in 15 colorways.',
           specs:['180gsm Combed Cotton','Sizes XS–3XL','MOQ: 50 units'] },
         { id:'hoodie-001', name:'French Terry Hoodie', category:'Sweatshirts', price:45000, minQty:30, stock:800,
@@ -630,19 +630,19 @@
           desc:'320gsm French terry loop. Kangaroo pocket, ribbed cuffs and hem.',
           specs:['320gsm French Terry','Sizes XS–2XL','MOQ: 30 units'] },
         { id:'chino-001', name:'Slim-Cut Chino Trouser', category:'Bottoms', price:52000, minQty:40, stock:600,
-          img:'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=600&h=750&fit=crop&q=80&auto=format',
+          img:'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&h=750&fit=crop&q=80&auto=format',
           desc:'98% Cotton 2% Elastane twill. YKK hardware. Slim taper from seat to ankle.',
           specs:['98% Cotton / 2% Elastane','Sizes 28–40','MOQ: 40 units'] },
         { id:'jacket-001', name:'Structured Denim Jacket', category:'Outerwear', price:78000, minQty:25, stock:400,
-          img:'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=600&h=750&fit=crop&q=80&auto=format',
+          img:'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=600&h=750&fit=crop&q=80&auto=format',
           desc:'12oz selvedge denim. Structured shoulder, chest pockets, brass hardware.',
           specs:['12oz Selvedge Denim','Sizes XS–XL','MOQ: 25 units'] },
         { id:'polo-001', name:'Mercerized Polo Shirt', category:'Formal', price:28500, minQty:50, stock:1200,
-          img:'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=600&h=750&fit=crop&q=80&auto=format',
+          img:'https://images.unsplash.com/photo-1625910513106-1898ff7c7c1e?w=600&h=750&fit=crop&q=80&auto=format',
           desc:'220gsm mercerized piqué. 3-button placket. Ideal for corporate branding.',
           specs:['220gsm Mercerized Piqué','Sizes XS–3XL','MOQ: 50 units'] },
         { id:'cargo-001', name:'Technical Cargo Short', category:'Bottoms', price:35000, minQty:40, stock:700,
-          img:'https://images.unsplash.com/photo-1591195853828-11db59a44f43?w=600&h=750&fit=crop&q=80&auto=format',
+          img:'https://images.unsplash.com/photo-1562183241-840b8af0721e?w=600&h=750&fit=crop&q=80&auto=format',
           desc:'210gsm ripstop nylon. 6 pockets, zip details. DWR water-resistant finish.',
           specs:['210gsm Ripstop Nylon','Sizes 28–38','MOQ: 40 units'] }
     ];
@@ -669,7 +669,7 @@
             card.className = 'bg-linen border border-concrete hover:shadow-md transition-shadow flex flex-col';
             card.innerHTML = `
                 <div class="relative overflow-hidden flex-shrink-0">
-                    <img src="${p.img}" alt="${p.name}" class="w-full aspect-[4/5] object-cover material-img">
+                    <img src="${p.img}" alt="${p.name}" class="w-full aspect-[4/5] object-cover material-img" onerror="this.onerror=null;this.src='https://placehold.co/600x750/EAE8E3/4A4F55?text=${encodeURIComponent(p.name)}'">
                     <span class="absolute top-3 left-3 bg-linen/90 text-xs uppercase tracking-widest px-2 py-1 text-graphite">${p.category}</span>
                     <span class="absolute top-3 right-3 text-[10px] font-mono ${inStock ? 'text-green-700' : 'text-red-600'} bg-linen/90 px-2 py-1">${inStock ? '● In Stock' : '○ Low Stock'}</span>
                 </div>
