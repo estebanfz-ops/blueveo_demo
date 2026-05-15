@@ -5,141 +5,235 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kina Studio | Precision B2B Confection</title>
     <meta name="description" content="A B2B clothing confection studio in Colombia. Precision-made garments with genuine artisan soul for global fashion labels.">
-    
-    <!-- Fonts: Cormorant Garamond for heritage/atelier feel, Inter for spec-sheet precision -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        // Backgrounds
-                        linen: '#F7F5F0',       // Main warm off-white background
-                        concrete: '#EAE8E3',    // Secondary background, raw industrial feel
-                        // Typography
-                        ink: '#1C2026',         // Deep charcoal, softer than pure black
-                        graphite: '#4A4F55',    // Secondary text
-                        // Accents (Colombian Material Landscape)
-                        indigo: '#2A3441',      // Heritage dye tradition
-                        ochre: '#C48C5E',       // Raw cotton bales, warmth
-                        blush: '#E2C2B3',       // Handwoven thread, subtle
+                        linen: '#F7F5F0', concrete: '#EAE8E3', ink: '#1C2026',
+                        graphite: '#4A4F55', indigo: '#2A3441', ochre: '#C48C5E', blush: '#E2C2B3',
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'], // For precision, specs, UI
-                        serif: ['Cormorant Garamond', 'serif'], // For heritage, emotion, headings
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Cormorant Garamond', 'serif'],
                     },
-                    spacing: {
-                        '18': '4.5rem',
-                        '22': '5.5rem',
-                        '30': '7.5rem',
-                    }
+                    spacing: { '18': '4.5rem', '22': '5.5rem', '30': '7.5rem' }
                 }
             }
         }
     </script>
-
     <style>
-        /* Base styling */
-        body {
-            background-color: #F7F5F0; /* bg-linen */
-            color: #1C2026; /* text-ink */
-            overflow-x: hidden;
-        }
-
-        /* The 'Sewing Machine Rhythm' Animation */
-        .reveal-element {
-            opacity: 0;
-            transform: translateY(30px);
-            /* Cubic bezier mimicking a precise mechanical movement settling softly */
-            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-                        transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .reveal-element.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Staggered delays for list items/grids */
+        body { background-color: #F7F5F0; color: #1C2026; overflow-x: hidden; }
+        .reveal-element { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94); }
+        .reveal-element.is-visible { opacity: 1; transform: translateY(0); }
         .delay-100 { transition-delay: 100ms; }
         .delay-200 { transition-delay: 200ms; }
         .delay-300 { transition-delay: 300ms; }
+        .stitch-border { border: 1px dashed #E2C2B3; }
+        .solid-border { border: 1px solid #EAE8E3; }
+        .material-img { filter: contrast(0.95) saturate(0.85); transition: filter 0.5s ease; }
+        .material-img:hover { filter: contrast(1) saturate(1); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #F7F5F0; }
+        ::-webkit-scrollbar-thumb { background: #EAE8E3; }
+        ::-webkit-scrollbar-thumb:hover { background: #D9C5B2; }
 
-        /* Tactile, spec-sheet aesthetics */
-        .stitch-border {
-            border: 1px dashed #E2C2B3; /* blush color */
-        }
-        
-        .solid-border {
-            border: 1px solid #EAE8E3; /* concrete color */
-        }
+        /* Cart Sidebar */
+        #cart-sidebar { position: fixed; top: 0; right: -440px; width: 440px; height: 100vh; background: #F7F5F0; z-index: 200; transition: right 0.4s cubic-bezier(0.25,0.46,0.45,0.94); border-left: 1px solid #EAE8E3; overflow-y: auto; box-shadow: -4px 0 24px rgba(0,0,0,0.08); display: flex; flex-direction: column; }
+        #cart-sidebar.open { right: 0; }
+        #cart-backdrop { position: fixed; inset: 0; background: rgba(28,32,38,0.4); z-index: 199; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        #cart-backdrop.open { opacity: 1; pointer-events: all; }
 
-        /* Subtle image treatment to feel more like raw material */
-        .material-img {
-            filter: contrast(0.95) saturate(0.85);
-            transition: filter 0.5s ease;
-        }
-        .material-img:hover {
-            filter: contrast(1) saturate(1);
-        }
-        
-        /* Custom scrollbar for webkit */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #F7F5F0; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #EAE8E3; 
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #D9C5B2; 
-        }
+        /* Payment Modal */
+        #payment-modal { position: fixed; inset: 0; z-index: 300; display: none; align-items: center; justify-content: center; }
+        #payment-modal.open { display: flex; }
+        #payment-modal-backdrop { position: absolute; inset: 0; background: rgba(28,32,38,0.6); }
+        #payment-modal-box { position: relative; z-index: 1; background: #F7F5F0; max-width: 540px; width: 90%; max-height: 90vh; overflow-y: auto; padding: 2.5rem; border: 1px solid #EAE8E3; }
+
+        /* WhatsApp */
+        #whatsapp-btn { position: fixed; bottom: 2rem; right: 2rem; z-index: 100; width: 58px; height: 58px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 18px rgba(37,211,102,0.45); cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; text-decoration: none; }
+        #whatsapp-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.55); }
+
+        /* Cart badge */
+        .cart-badge { position: absolute; top: -7px; right: -7px; background: #C48C5E; color: #F7F5F0; font-size: 10px; font-weight: 500; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+        /* Google Translate */
+        .goog-te-gadget { font-size: 0 !important; }
+        .goog-te-gadget select { font-size: 11px !important; border: 1px solid #EAE8E3; background: transparent; color: #4A4F55; padding: 4px 8px; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; outline: none; }
+        body > .skiptranslate { display: none !important; }
+        body { top: 0 !important; }
+
+        /* Logo upload */
+        .logo-upload-area { border: 1px dashed #E2C2B3; padding: 10px; text-align: center; cursor: pointer; transition: background 0.2s ease; min-height: 52px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; }
+        .logo-upload-area:hover { background: #EAE8E3; }
+        .logo-preview { max-height: 40px; max-width: 100%; object-fit: contain; }
+
+        /* Form selects */
+        select.form-field { border: none; border-bottom: 1px solid #EAE8E3; background: transparent; padding-bottom: 8px; font-size: 14px; font-weight: 300; color: #1C2026; outline: none; width: 100%; cursor: pointer; appearance: none; -webkit-appearance: none; }
+        select.form-field:focus { border-bottom-color: #1C2026; }
+
+        /* Inventory */
+        #inventory-section { display: none; }
+        #inventory-section.visible { display: block; }
+
+        /* Toast */
+        #toast { position: fixed; bottom: 5.5rem; left: 50%; transform: translateX(-50%) translateY(12px); background: #1C2026; color: #F7F5F0; padding: 10px 22px; font-size: 12px; letter-spacing: 0.05em; z-index: 500; opacity: 0; transition: all 0.3s ease; pointer-events: none; border-radius: 2px; white-space: nowrap; }
+        #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* Demo banner */
+        .demo-banner { background: #C48C5E; color: #F7F5F0; font-size: 10px; text-align: center; letter-spacing: 0.18em; text-transform: uppercase; padding: 7px; font-family: 'Inter', sans-serif; }
+
+        /* Translate button wrapper */
+        #translate-btn-wrapper button { font-size: 11px; border: 1px solid #EAE8E3; background: transparent; color: #4A4F55; padding: 5px 12px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; outline: none; display: flex; align-items: center; gap: 6px; transition: border-color 0.2s; }
+        #translate-btn-wrapper button:hover { border-color: #C48C5E; color: #C48C5E; }
     </style>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false }, 'google_translate_element');
+        }
+    </script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
 </head>
+
 <body class="antialiased selection:bg-ochre selection:text-linen font-sans">
 
-    <header class="fixed top-0 w-full z-50 transition-all duration-300 backdrop-blur-md bg-linen/80 border-b border-concrete/50" id="main-header">
+    <!-- Demo Banner -->
+    <div class="demo-banner">Demo Website — Products &amp; Checkout Are Simulated for Presentation Purposes</div>
+
+    <!-- Toast -->
+    <div id="toast"></div>
+
+    <!-- WhatsApp Floating Button -->
+    <a id="whatsapp-btn" href="https://wa.me/573005550192?text=Hello%20Kina%20Studio!%20I%20found%20your%20website%20and%20I%27m%20interested%20in%20a%20personalized%20production%20service.%20Could%20you%20share%20details%20on%20custom%20orders%2C%20minimum%20quantities%2C%20pricing%2C%20and%20lead%20times%3F" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+
+    <!-- Cart Backdrop -->
+    <div id="cart-backdrop" onclick="toggleCart()"></div>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar">
+        <div class="p-6 border-b border-concrete flex items-center justify-between flex-shrink-0">
+            <h3 class="font-serif text-xl text-ink">Production Cart</h3>
+            <button onclick="toggleCart()" class="text-graphite hover:text-ink transition-colors p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <div id="cart-items" class="p-6 flex-1 overflow-y-auto">
+            <p class="text-graphite text-sm font-light text-center py-16" id="cart-empty-msg">No items added yet.</p>
+        </div>
+        <div id="cart-footer" class="hidden border-t border-concrete p-6 flex-shrink-0 bg-linen">
+            <div class="flex justify-between items-baseline mb-1">
+                <span class="text-xs uppercase tracking-wider text-graphite">Subtotal</span>
+                <span class="font-serif text-xl text-ink" id="cart-subtotal">$0 COP</span>
+            </div>
+            <p class="text-[11px] text-graphite font-light mb-5">Final pricing confirmed on order review. Taxes &amp; shipping TBD.</p>
+            <button onclick="openPaymentModal()" class="w-full py-4 bg-ink text-linen text-xs uppercase tracking-widest hover:bg-indigo transition-colors mb-2">Proceed to Checkout</button>
+            <button onclick="clearCart()" class="w-full py-2 text-xs uppercase tracking-widest text-graphite hover:text-ink transition-colors">Clear Cart</button>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="payment-modal">
+        <div id="payment-modal-backdrop" onclick="closePaymentModal()"></div>
+        <div id="payment-modal-box">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-serif text-2xl text-ink">Order Checkout</h3>
+                <button onclick="closePaymentModal()" class="text-graphite hover:text-ink p-1">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div id="order-summary" class="mb-5 bg-concrete/40 p-4 text-sm"></div>
+            <div class="grid grid-cols-2 gap-4 mb-5">
+                <div class="flex flex-col gap-1 col-span-2 sm:col-span-1">
+                    <label class="text-xs uppercase tracking-widest text-graphite">Contact Email *</label>
+                    <input id="checkout-email" type="email" class="border-b border-concrete pb-2 bg-transparent focus:outline-none focus:border-ink text-sm font-light" placeholder="you@brand.com">
+                </div>
+                <div class="flex flex-col gap-1 col-span-2 sm:col-span-1">
+                    <label class="text-xs uppercase tracking-widest text-graphite">Brand Name *</label>
+                    <input id="checkout-brand" type="text" class="border-b border-concrete pb-2 bg-transparent focus:outline-none focus:border-ink text-sm font-light" placeholder="Studio Nord">
+                </div>
+            </div>
+            <div id="mp-card-form" class="mb-5">
+                <div class="bg-linen border border-concrete p-4">
+                    <p class="text-[10px] uppercase tracking-wider text-ochre font-medium mb-3">Mercado Pago — Sandbox / Demo Mode</p>
+                    <div class="grid grid-cols-1 gap-3">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-xs text-graphite">Card Number</label>
+                            <input type="text" maxlength="19" placeholder="4075 5957 1648 3764" class="border-b border-concrete pb-2 bg-transparent focus:outline-none focus:border-ink text-sm font-light font-mono" id="card-number">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="flex flex-col gap-1">
+                                <label class="text-xs text-graphite">Expiry (MM/AA)</label>
+                                <input type="text" placeholder="12/28" maxlength="5" class="border-b border-concrete pb-2 bg-transparent focus:outline-none focus:border-ink text-sm font-light" id="card-expiry">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="text-xs text-graphite">CVV</label>
+                                <input type="text" placeholder="123" maxlength="4" class="border-b border-concrete pb-2 bg-transparent focus:outline-none focus:border-ink text-sm font-light" id="card-cvv">
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-xs text-graphite">Cardholder Name</label>
+                            <input type="text" placeholder="APRO  (test name — will approve)" class="border-b border-concrete pb-2 bg-transparent focus:outline-none focus:border-ink text-sm font-light" id="card-name">
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-graphite/70 mt-3 leading-relaxed">Test card: <strong>4075 5957 1648 3764</strong> · Name: <strong>APRO</strong> · Any future date · CVV: <strong>123</strong></p>
+                </div>
+            </div>
+            <div id="payment-success" class="hidden text-center py-8">
+                <div class="w-12 h-12 bg-ochre/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6 text-ochre" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <h4 class="font-serif text-xl text-ink mb-2">Order Confirmed</h4>
+                <p class="text-graphite text-sm font-light mb-4">Your production inquiry has been logged. Our team will confirm lead times and finalize pricing within 48 hours.</p>
+                <button onclick="closePaymentModal()" class="text-xs uppercase tracking-widest text-ochre hover:underline">Close</button>
+            </div>
+            <div id="payment-btn-area">
+                <button onclick="processPayment()" id="pay-btn" class="w-full py-4 bg-ink text-linen text-xs uppercase tracking-widest hover:bg-ochre transition-colors duration-300">Confirm Order — Demo</button>
+                <p class="text-[10px] text-graphite text-center mt-2">No real charge. This is a demo environment.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="fixed top-8 w-full z-50 transition-all duration-300 backdrop-blur-md bg-linen/80 border-b border-concrete/50" id="main-header">
         <div class="max-w-7xl mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
-            <!-- Brand -->
             <div class="flex items-center gap-2">
                 <span class="font-serif text-2xl tracking-wide text-ink font-medium">Kina</span>
                 <span class="text-xs uppercase tracking-[0.2em] text-graphite mt-1 hidden sm:block">Studio Medellín</span>
             </div>
-            
-            <!-- Navigation Links -->
-            <nav class="hidden md:flex gap-10 text-xs uppercase tracking-widest font-medium text-graphite">
+            <nav class="hidden md:flex gap-8 text-xs uppercase tracking-widest font-medium text-graphite">
                 <a href="#atelier" class="hover:text-ochre transition-colors">The Atelier</a>
                 <a href="#capabilities" class="hover:text-ochre transition-colors">Capabilities</a>
                 <a href="#materials" class="hover:text-ochre transition-colors">Sourcing</a>
+                <a href="#products" class="hover:text-ochre transition-colors">Products</a>
             </nav>
-            
-            <!-- CTA Button -->
-            <div>
-                <a href="#partner" class="text-xs uppercase tracking-widest font-medium text-linen bg-ink px-6 py-3 rounded-sm hover:bg-indigo transition-colors flex items-center gap-2">
+            <div class="flex items-center gap-4">
+                <div id="google_translate_element" class="hidden md:block"></div>
+                <button onclick="toggleCart()" class="relative text-graphite hover:text-ink transition-colors p-1" aria-label="Open cart">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                    <span class="cart-badge" id="cart-count" style="display:none">0</span>
+                </button>
+                <a href="#partner" class="text-xs uppercase tracking-widest font-medium text-linen bg-ink px-5 py-3 rounded-sm hover:bg-indigo transition-colors hidden sm:flex items-center gap-2">
                     <span>Partner Inquiries</span>
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </a>
             </div>
         </div>
     </header>
 
     <main>
-        <section class="relative pt-32 pb-20 md:pt-48 md:pb-32 px-6 md:px-12 max-w-7xl mx-auto">
+        <!-- HERO -->
+        <section class="relative pt-44 pb-20 md:pt-56 md:pb-32 px-6 md:px-12 max-w-7xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 items-center">
-                
-                <!-- Hero Text -->
                 <div class="md:col-span-7 z-10 reveal-element">
                     <div class="flex items-center gap-4 mb-6">
                         <div class="w-12 h-[1px] bg-ochre"></div>
-                        <span class="text-xs uppercase tracking-[0.2em] text-ochre font-medium">B2B Confection & Manufacturing</span>
+                        <span class="text-xs uppercase tracking-[0.2em] text-ochre font-medium">B2B Confection &amp; Manufacturing</span>
                     </div>
                     <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.1] text-ink mb-8">
                         Global precision.<br>
@@ -149,267 +243,673 @@
                         We are the production partner for discerning fashion labels. Rigorous specification meets generational craft in our Medellín-based studio.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#capabilities" class="inline-flex justify-center items-center px-8 py-4 bg-transparent border border-ink text-ink text-sm uppercase tracking-widest hover:bg-ink hover:text-linen transition-colors rounded-sm">
-                            Explore Capabilities
-                        </a>
+                        <a href="#products" class="inline-flex justify-center items-center px-8 py-4 bg-ink text-linen text-sm uppercase tracking-widest hover:bg-ochre transition-colors rounded-sm">Browse Demo Products</a>
+                        <a href="#capabilities" class="inline-flex justify-center items-center px-8 py-4 bg-transparent border border-ink text-ink text-sm uppercase tracking-widest hover:bg-ink hover:text-linen transition-colors rounded-sm">Explore Capabilities</a>
                     </div>
                 </div>
-
-                <!-- Hero Imagery (Simulated Textures via Placeholders) -->
                 <div class="md:col-span-5 relative mt-12 md:mt-0 reveal-element delay-200">
                     <div class="aspect-[3/4] relative z-10">
-                        <!-- Simulated image of folded raw linen/cotton -->
-                        <img src="https://placehold.co/600x800/EAE8E3/4A4F55?text=Textile+Stacks\nStudio+Floor" alt="Folded textiles in studio" class="w-full h-full object-cover rounded-sm material-img shadow-lg shadow-concrete/50">
+                        <img src="https://placehold.co/600x800/EAE8E3/4A4F55?text=Textile+Stacks%0AStudio+Floor" alt="Folded textiles in studio" class="w-full h-full object-cover rounded-sm material-img shadow-lg shadow-concrete/50">
                     </div>
-                    <!-- Decorative offset block representing a pattern piece -->
                     <div class="absolute -bottom-8 -left-8 w-2/3 aspect-square bg-blush/20 border border-blush z-0 hidden md:block"></div>
                 </div>
             </div>
         </section>
 
+        <!-- ATELIER -->
         <section id="atelier" class="py-24 md:py-32 bg-concrete relative overflow-hidden">
-            <!-- Subtle background texture line -->
             <div class="absolute left-1/2 top-0 bottom-0 w-[1px] bg-linen/50 -translate-x-1/2 hidden md:block"></div>
-            
             <div class="max-w-4xl mx-auto px-6 md:px-12 text-center relative z-10">
                 <span class="text-xs uppercase tracking-[0.2em] text-graphite font-medium block mb-8 reveal-element">Our Philosophy</span>
-                <h2 class="font-serif text-3xl md:text-5xl leading-tight text-ink mb-10 reveal-element delay-100">
-                    Where the hum of precision machinery coexists with handwritten pattern notes pinned to linen boards.
-                </h2>
-                <p class="text-graphite md:text-lg font-light leading-relaxed reveal-element delay-200 max-w-2xl mx-auto">
-                    Based in Medellín—a city with a profound textile heritage—Kina Studio bridges the gap between artisan warmth and industrial reliability. We operate our factory floor like a high-end atelier: uncluttered, purposeful, and profoundly human. Every seam is a testament to our dual commitment: exacting standards for international buyers, and deep respect for the hands that sew.
-                </p>
+                <h2 class="font-serif text-3xl md:text-5xl leading-tight text-ink mb-10 reveal-element delay-100">Where the hum of precision machinery coexists with handwritten pattern notes pinned to linen boards.</h2>
+                <p class="text-graphite md:text-lg font-light leading-relaxed reveal-element delay-200 max-w-2xl mx-auto">Based in Medellín—a city with a profound textile heritage—Kina Studio bridges the gap between artisan warmth and industrial reliability. We operate our factory floor like a high-end atelier: uncluttered, purposeful, and profoundly human. Every seam is a testament to our dual commitment: exacting standards for international buyers, and deep respect for the hands that sew.</p>
             </div>
         </section>
 
+        <!-- CAPABILITIES -->
         <section id="capabilities" class="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 reveal-element">
                 <div>
                     <span class="text-xs uppercase tracking-[0.2em] text-ochre font-medium block mb-4">Studio Disciplines</span>
                     <h2 class="font-serif text-4xl md:text-5xl text-ink">Production Capabilities</h2>
                 </div>
-                <p class="text-graphite font-light text-sm max-w-sm md:text-right">
-                    Structured processes designed for scale, executed with the meticulous care of a sample room.
-                </p>
+                <p class="text-graphite font-light text-sm max-w-sm md:text-right">Structured processes designed for scale, executed with the meticulous care of a sample room.</p>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-0 solid-border bg-linen">
-                <!-- Capability 1 -->
                 <div class="p-10 border-b md:border-b-0 md:border-r border-concrete hover:bg-concrete/30 transition-colors reveal-element delay-100 group">
                     <div class="text-xs text-graphite mb-8 font-mono">SEC. 01</div>
                     <h3 class="font-serif text-2xl text-ink mb-4 group-hover:text-ochre transition-colors">Technical Development</h3>
-                    <p class="text-graphite font-light text-sm leading-relaxed mb-8">
-                        From raw concept to production-ready tech packs. We digitize patterns, grade with surgical precision, and iterate samples until the fit aligns perfectly with your brand architecture.
-                    </p>
+                    <p class="text-graphite font-light text-sm leading-relaxed mb-8">From raw concept to production-ready tech packs. We digitize patterns, grade with surgical precision, and iterate samples until the fit aligns perfectly with your brand architecture.</p>
                     <ul class="text-xs text-graphite space-y-2 border-t border-concrete pt-4">
-                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-ochre"></div> Pattern Drafting & Digitization</li>
-                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-ochre"></div> Size Grading</li>
-                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-ochre"></div> Prototype & Fit Sampling</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-ochre"></div>Pattern Drafting &amp; Digitization</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-ochre"></div>Size Grading</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-ochre"></div>Prototype &amp; Fit Sampling</li>
                     </ul>
                 </div>
-
-                <!-- Capability 2 -->
                 <div class="p-10 border-b md:border-b-0 md:border-r border-concrete hover:bg-concrete/30 transition-colors reveal-element delay-200 group">
                     <div class="text-xs text-graphite mb-8 font-mono">SEC. 02</div>
-                    <h3 class="font-serif text-2xl text-ink mb-4 group-hover:text-indigo transition-colors">Cut & Sew Manufacturing</h3>
-                    <p class="text-graphite font-light text-sm leading-relaxed mb-8">
-                        Scalable production runs that do not compromise on finish. Our floor is optimized for mid-to-large volume orders, maintaining strict tolerances on every batch.
-                    </p>
+                    <h3 class="font-serif text-2xl text-ink mb-4 group-hover:text-indigo transition-colors">Cut &amp; Sew Manufacturing</h3>
+                    <p class="text-graphite font-light text-sm leading-relaxed mb-8">Scalable production runs that do not compromise on finish. Our floor is optimized for mid-to-large volume orders, maintaining strict tolerances on every batch.</p>
                     <ul class="text-xs text-graphite space-y-2 border-t border-concrete pt-4">
-                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-indigo"></div> Precision Cutting</li>
-                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-indigo"></div> Specialized Machine Lines</li>
-                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-indigo"></div> Hand-finished Detailing</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-indigo"></div>Precision Cutting</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-indigo"></div>Specialized Machine Lines</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-indigo"></div>Hand-finished Detailing</li>
                     </ul>
                 </div>
-
-                <!-- Capability 3 -->
                 <div class="p-10 hover:bg-concrete/30 transition-colors reveal-element delay-300 group">
                     <div class="text-xs text-graphite mb-8 font-mono">SEC. 03</div>
                     <h3 class="font-serif text-2xl text-ink mb-4 group-hover:text-blush transition-colors">Quality Assurance</h3>
-                    <p class="text-graphite font-light text-sm leading-relaxed mb-8">
-                        A rigorous, multi-stage inspection protocol. We view QC not as a final step, but as a continuous thread running through the entire manufacturing lifecycle.
-                    </p>
+                    <p class="text-graphite font-light text-sm leading-relaxed mb-8">A rigorous, multi-stage inspection protocol. We view QC not as a final step, but as a continuous thread running through the entire manufacturing lifecycle.</p>
                     <ul class="text-xs text-graphite space-y-2 border-t border-concrete pt-4">
-                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-blush"></div> Inline Process Checks</li>
-                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-blush"></div> Final Garment Inspection</li>
-                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-blush"></div> Export-ready Packaging</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-blush"></div>Inline Process Checks</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-blush"></div>Final Garment Inspection</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-blush"></div>Export-ready Packaging</li>
                     </ul>
                 </div>
             </div>
         </section>
 
+        <!-- MATERIALS -->
         <section id="materials" class="py-24 md:py-32 bg-indigo text-linen overflow-hidden">
             <div class="max-w-7xl mx-auto px-6 md:px-12">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-                    
                     <div class="order-2 lg:order-1 relative reveal-element">
-                        <!-- Simulated indigo dye/fabric close-up -->
                         <div class="aspect-square bg-ink rounded-sm overflow-hidden relative">
-                            <img src="https://placehold.co/800x800/1A202C/EAE8E3?text=Indigo+Dye\nProcess" alt="Indigo dyed fabric" class="w-full h-full object-cover opacity-80 mix-blend-luminosity hover:mix-blend-normal transition-all duration-700">
-                            <!-- Overlay element mimicking a physical material swatch -->
+                            <img src="https://placehold.co/800x800/1A202C/EAE8E3?text=Indigo+Dye%0AProcess" alt="Indigo dyed fabric" class="w-full h-full object-cover opacity-80 mix-blend-luminosity hover:mix-blend-normal transition-all duration-700">
                             <div class="absolute bottom-6 right-6 w-32 h-40 bg-ochre p-4 shadow-xl flex flex-col justify-end">
                                 <span class="font-mono text-[10px] text-linen/70">SWATCH 04</span>
                                 <span class="text-sm font-medium text-linen mt-1">Raw Cotton</span>
                             </div>
                         </div>
                     </div>
-
                     <div class="order-1 lg:order-2 reveal-element delay-100">
                         <span class="text-xs uppercase tracking-[0.2em] text-blush font-medium block mb-6">Material Landscape</span>
-                        <h2 class="font-serif text-4xl md:text-5xl leading-tight mb-8">
-                            Grounded in the story of craft. Sourced with global responsibility.
-                        </h2>
-                        <p class="font-light text-linen/80 text-lg leading-relaxed mb-8">
-                            We leverage Colombia's strategic position and rich textile history to source premium materials—from native raw cottons to technical synthetics. 
-                        </p>
-                        <p class="font-light text-linen/80 text-sm leading-relaxed mb-10">
-                            Our procurement networks are transparent, prioritizing suppliers who share our commitment to environmental stewardship and ethical labor practices. You are not just buying manufacturing capacity; you are securing a responsible supply chain.
-                        </p>
-                        
+                        <h2 class="font-serif text-4xl md:text-5xl leading-tight mb-8">Grounded in the story of craft. Sourced with global responsibility.</h2>
+                        <p class="font-light text-linen/80 text-lg leading-relaxed mb-8">We leverage Colombia's strategic position and rich textile history to source premium materials—from native raw cottons to technical synthetics.</p>
+                        <p class="font-light text-linen/80 text-sm leading-relaxed mb-10">Our procurement networks are transparent, prioritizing suppliers who share our commitment to environmental stewardship and ethical labor practices.</p>
                         <div class="grid grid-cols-2 gap-8 border-t border-linen/20 pt-8">
-                            <div>
-                                <span class="block text-3xl font-serif text-blush mb-2">100%</span>
-                                <span class="text-xs uppercase tracking-wider text-linen/60">Traceable Inputs</span>
-                            </div>
-                            <div>
-                                <span class="block text-3xl font-serif text-ochre mb-2">Local</span>
-                                <span class="text-xs uppercase tracking-wider text-linen/60">Sourcing Network</span>
-                            </div>
+                            <div><span class="block text-3xl font-serif text-blush mb-2">100%</span><span class="text-xs uppercase tracking-wider text-linen/60">Traceable Inputs</span></div>
+                            <div><span class="block text-3xl font-serif text-ochre mb-2">Local</span><span class="text-xs uppercase tracking-wider text-linen/60">Sourcing Network</span></div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
 
+        <!-- DEMO PRODUCTS -->
+        <section id="products" class="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 reveal-element">
+                <div>
+                    <span class="text-xs uppercase tracking-[0.2em] text-ochre font-medium block mb-4">Demo Catalogue</span>
+                    <h2 class="font-serif text-4xl md:text-5xl text-ink">Sample Production Items</h2>
+                </div>
+                <p class="text-graphite font-light text-sm max-w-xs md:text-right">Representative garment categories. Upload your logo, select units, and add to your production cart.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="products-grid"></div>
+        </section>
+
+        <!-- INVENTORY ADMIN (hidden, toggled from footer) -->
+        <section id="inventory-section" class="py-16 px-6 md:px-12 max-w-7xl mx-auto">
+            <div class="border border-concrete p-8">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <span class="text-xs uppercase tracking-[0.2em] text-graphite font-medium block mb-2">Admin Panel</span>
+                        <h2 class="font-serif text-3xl text-ink">Live Inventory</h2>
+                    </div>
+                    <button onclick="toggleInventory()" class="text-xs uppercase tracking-widest text-graphite hover:text-ink border border-concrete px-4 py-2 transition-colors">Close</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-concrete text-left">
+                                <th class="text-xs uppercase tracking-wider text-graphite font-medium pb-4 pr-8">Product</th>
+                                <th class="text-xs uppercase tracking-wider text-graphite font-medium pb-4 pr-8">Initial Stock</th>
+                                <th class="text-xs uppercase tracking-wider text-graphite font-medium pb-4 pr-8">Units Ordered</th>
+                                <th class="text-xs uppercase tracking-wider text-graphite font-medium pb-4 pr-8">Remaining</th>
+                                <th class="text-xs uppercase tracking-wider text-graphite font-medium pb-4">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-table-body" class="divide-y divide-concrete"></tbody>
+                    </table>
+                </div>
+                <p class="text-xs text-graphite font-light mt-6">Inventory updates in real time as orders are confirmed. Each order also syncs to the connected Google Sheet.</p>
+            </div>
+        </section>
+
+        <!-- PARTNER INQUIRY (enhanced) -->
         <section id="partner" class="py-32 px-6 md:px-12 max-w-4xl mx-auto text-center">
             <div class="reveal-element">
-                <svg class="w-8 h-8 mx-auto mb-8 text-ochre" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 4v16m8-8H4"></path>
-                </svg>
-                <h2 class="font-serif text-4xl md:text-5xl text-ink mb-6">
-                    A partnership built for the long term.
-                </h2>
-                <p class="text-graphite font-light md:text-lg leading-relaxed mb-12 max-w-2xl mx-auto">
-                    We reserve our capacity for brands seeking a reliable, high-quality extension of their own team. Let us discuss your production roadmap, lead times, and how Kina Studio can elevate your next collection.
-                </p>
-                
-                <div class="stitch-border p-8 md:p-12 bg-white relative">
-                    <!-- Corner accents mimicking pattern markings -->
+                <svg class="w-8 h-8 mx-auto mb-8 text-ochre" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 4v16m8-8H4"/></svg>
+                <h2 class="font-serif text-4xl md:text-5xl text-ink mb-6">A partnership built for the long term.</h2>
+                <p class="text-graphite font-light md:text-lg leading-relaxed mb-12 max-w-2xl mx-auto">We reserve our capacity for brands seeking a reliable, high-quality extension of their own team. Let us discuss your production roadmap, lead times, and how Kina Studio can elevate your next collection.</p>
+
+                <div class="stitch-border p-8 md:p-12 bg-white relative text-left">
                     <div class="absolute top-0 left-0 w-3 h-3 border-t border-l border-ink"></div>
                     <div class="absolute top-0 right-0 w-3 h-3 border-t border-r border-ink"></div>
                     <div class="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-ink"></div>
                     <div class="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-ink"></div>
 
-                    <form class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+                    <div id="sheets-notice" class="bg-ochre/10 border border-ochre/30 p-4 mb-8 text-xs text-graphite leading-relaxed">
+                        <strong class="text-ochre uppercase tracking-wider">Google Sheets Not Connected</strong><br>
+                        Submissions are logged to the browser console until you paste your Apps Script URL. See the setup guide below.
+                    </div>
+
+                    <form id="inquiry-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="flex flex-col gap-2">
-                            <label class="text-xs uppercase tracking-widest text-graphite font-medium">Brand / Company Name</label>
-                            <input type="text" class="border-b border-concrete pb-2 bg-transparent focus:outline-none focus:border-ink transition-colors font-light text-sm" placeholder="e.g. Studio Nord">
+                            <label class="text-xs uppercase tracking-widest text-graphite font-medium">Brand / Company Name *</label>
+                            <input type="text" name="brand" required class="border-b border-concrete pb-2 bg-transparent focus:outline-none focus:border-ink transition-colors font-light text-sm" placeholder="e.g. Studio Nord">
                         </div>
                         <div class="flex flex-col gap-2">
-                            <label class="text-xs uppercase tracking-widest text-graphite font-medium">Your Name & Role</label>
-                            <input type="text" class="border-b border-concrete pb-2 bg-transparent focus:outline-none focus:border-ink transition-colors font-light text-sm" placeholder="Sourcing Director">
+                            <label class="text-xs uppercase tracking-widest text-graphite font-medium">Your Name &amp; Role *</label>
+                            <input type="text" name="contactName" required class="border-b border-concrete pb-2 bg-transparent focus:outline-none focus:border-ink transition-colors font-light text-sm" placeholder="Sourcing Director">
                         </div>
-                        <div class="flex flex-col gap-2 md:col-span-2 mt-4">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs uppercase tracking-widest text-graphite font-medium">Email Address *</label>
+                            <input type="email" name="email" required class="border-b border-concrete pb-2 bg-transparent focus:outline-none focus:border-ink transition-colors font-light text-sm" placeholder="you@brand.com">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs uppercase tracking-widest text-graphite font-medium">Phone / WhatsApp</label>
+                            <input type="tel" name="phone" class="border-b border-concrete pb-2 bg-transparent focus:outline-none focus:border-ink transition-colors font-light text-sm" placeholder="+1 212 555 0199">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs uppercase tracking-widest text-graphite font-medium">Country / Market</label>
+                            <input type="text" name="country" class="border-b border-concrete pb-2 bg-transparent focus:outline-none focus:border-ink transition-colors font-light text-sm" placeholder="United States">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs uppercase tracking-widest text-graphite font-medium">Product Type</label>
+                            <select name="productType" class="form-field">
+                                <option value="" disabled selected>Select category...</option>
+                                <option>T-Shirts &amp; Basics</option>
+                                <option>Hoodies &amp; Sweatshirts</option>
+                                <option>Trousers &amp; Bottoms</option>
+                                <option>Outerwear &amp; Jackets</option>
+                                <option>Activewear &amp; Technical</option>
+                                <option>Polo &amp; Formal Shirts</option>
+                                <option>Denim</option>
+                                <option>Mixed / Full Collection</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs uppercase tracking-widest text-graphite font-medium">Approximate Qty / Order</label>
+                            <select name="quantity" class="form-field">
+                                <option value="" disabled selected>Select range...</option>
+                                <option>50 – 100 units</option>
+                                <option>100 – 500 units</option>
+                                <option>500 – 1,000 units</option>
+                                <option>1,000 – 5,000 units</option>
+                                <option>5,000+ units</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs uppercase tracking-widest text-graphite font-medium">Budget per Unit (COP)</label>
+                            <select name="budget" class="form-field">
+                                <option value="" disabled selected>Select range...</option>
+                                <option>Under $15,000 COP</option>
+                                <option>$15,000 – $35,000 COP</option>
+                                <option>$35,000 – $70,000 COP</option>
+                                <option>$70,000 – $120,000 COP</option>
+                                <option>$120,000+ COP</option>
+                                <option>To be negotiated</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs uppercase tracking-widest text-graphite font-medium">Desired Delivery Timeline</label>
+                            <select name="timeline" class="form-field">
+                                <option value="" disabled selected>Select timeline...</option>
+                                <option>ASAP (Rush order)</option>
+                                <option>Within 4 weeks</option>
+                                <option>4 – 8 weeks</option>
+                                <option>8 – 16 weeks</option>
+                                <option>16+ weeks / Seasonal</option>
+                                <option>Flexible</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs uppercase tracking-widest text-graphite font-medium">Preferred Contact Method</label>
+                            <select name="contactMethod" class="form-field">
+                                <option value="" disabled selected>Select method...</option>
+                                <option>Email</option>
+                                <option>WhatsApp</option>
+                                <option>Video Call (Zoom / Meet)</option>
+                                <option>Phone Call</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-2 md:col-span-2">
                             <label class="text-xs uppercase tracking-widest text-graphite font-medium">Production Inquiry Details</label>
-                            <textarea rows="3" class="border-b border-concrete pb-2 bg-transparent focus:outline-none focus:border-ink transition-colors font-light text-sm resize-none" placeholder="Estimated volumes, target lead times, or specific material requirements..."></textarea>
+                            <textarea name="details" rows="3" class="border-b border-concrete pb-2 bg-transparent focus:outline-none focus:border-ink transition-colors font-light text-sm resize-none" placeholder="Specific materials, branding requirements, tech pack status, sustainability requirements, certifications needed..."></textarea>
                         </div>
-                        <div class="md:col-span-2 mt-6 flex justify-center">
-                            <button type="button" class="px-10 py-4 bg-ink text-linen text-sm uppercase tracking-widest hover:bg-ochre transition-colors duration-300 w-full sm:w-auto">
-                                Submit Inquiry
-                            </button>
+                        <div class="md:col-span-2 mt-4 flex justify-center">
+                            <button type="submit" id="inquiry-submit-btn" class="px-10 py-4 bg-ink text-linen text-sm uppercase tracking-widest hover:bg-ochre transition-colors duration-300 w-full sm:w-auto">Submit Inquiry</button>
                         </div>
                     </form>
+
+                    <div id="inquiry-success" class="hidden text-center py-10">
+                        <div class="w-12 h-12 bg-ochre/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-6 h-6 text-ochre" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <h4 class="font-serif text-xl text-ink mb-2">Inquiry Received</h4>
+                        <p class="text-graphite text-sm font-light mb-5">Thank you. Our studio team will review your requirements and be in touch within 2 business days.</p>
+                        <button onclick="resetInquiryForm()" class="text-xs uppercase tracking-widest text-ochre hover:underline">Submit Another</button>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <footer class="bg-ink text-linen/70 py-16 border-t border-indigo">
-            <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 text-sm font-light">
-                
-                <div class="md:col-span-1">
-                    <span class="font-serif text-2xl tracking-wide text-linen block mb-4">Kina</span>
-                    <p class="leading-relaxed text-xs">
-                        Precision B2B clothing confection.<br>
-                        Grounded in Colombian craft.<br>
-                        Engineered for global standards.
-                    </p>
-                </div>
+        <!-- GOOGLE SHEETS SETUP GUIDE -->
+        <section class="pb-20 px-6 md:px-12 max-w-4xl mx-auto">
+            <details class="border border-concrete">
+                <summary class="p-6 cursor-pointer text-xs uppercase tracking-widest font-medium text-graphite hover:text-ink transition-colors list-none flex items-center justify-between">
+                    <span>Google Sheets Setup — Connect Forms in 5 Steps</span>
+                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 text-sm text-graphite font-light space-y-3 border-t border-concrete pt-5">
+                    <p class="font-medium text-ink text-xs uppercase tracking-wider">Follow these 5 steps — takes about 3 minutes:</p>
+                    <ol class="space-y-3 list-decimal list-inside text-sm">
+                        <li>Go to <strong>sheets.google.com</strong> → create a new spreadsheet → name it <em>Kina Studio Data</em></li>
+                        <li>Rename the first tab to <strong>Inquiries</strong>. Add two more tabs named <strong>Orders</strong> and <strong>Inventory</strong></li>
+                        <li>Click <strong>Extensions → Apps Script</strong>. Delete any existing code and paste the script below</li>
+                        <li>Click <strong>Save</strong> → <strong>Deploy → New Deployment</strong> → type: <em>Web App</em> → Execute as: <em>Me</em> → Access: <em>Anyone</em> → Deploy → copy the URL</li>
+                        <li>In this HTML file find <code>const APPS_SCRIPT_URL = ''</code> and paste the URL between the quotes. Save. Done!</li>
+                    </ol>
+                    <div class="bg-ink text-linen p-5 font-mono text-[11px] overflow-x-auto leading-relaxed mt-4 rounded-sm">
+<pre>function doPost(e) {
+  try {
+    var d = JSON.parse(e.postData.contents);
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
 
-                <div>
-                    <h4 class="text-xs uppercase tracking-widest text-linen font-medium mb-6">Headquarters</h4>
-                    <address class="not-italic text-xs space-y-1">
-                        Cra. 48 #26-85, Industrial Hub<br>
-                        Medellín, Antioquia<br>
-                        Colombia (CO)
-                    </address>
-                </div>
+    if (d.type === 'inquiry') {
+      var s = ss.getSheetByName('Inquiries');
+      if (s.getLastRow() === 0)
+        s.appendRow(['Timestamp','Brand','Contact','Email','Phone',
+          'Country','Product Type','Quantity','Budget','Timeline',
+          'Contact Method','Details']);
+      s.appendRow([new Date(), d.brand, d.contactName, d.email,
+        d.phone, d.country, d.productType, d.quantity,
+        d.budget, d.timeline, d.contactMethod, d.details]);
+    }
 
-                <div>
-                    <h4 class="text-xs uppercase tracking-widest text-linen font-medium mb-6">Contact</h4>
-                    <ul class="text-xs space-y-2">
-                        <li><a href="#" class="hover:text-ochre transition-colors">partners@kinastudio.co</a></li>
-                        <li><a href="#" class="hover:text-ochre transition-colors">+57 (300) 555-0192</a></li>
-                        <li>Mon-Fri, 08:00 - 17:00 COT</li>
-                    </ul>
-                </div>
+    if (d.type === 'order') {
+      var o = ss.getSheetByName('Orders');
+      if (o.getLastRow() === 0)
+        o.appendRow(['Timestamp','Brand','Email','Items','Total COP']);
+      o.appendRow([new Date(), d.brand, d.email, d.items, d.total]);
 
-                <div>
-                    <h4 class="text-xs uppercase tracking-widest text-linen font-medium mb-6">Legal & Specs</h4>
-                    <ul class="text-xs space-y-2">
-                        <li><a href="#" class="hover:text-ochre transition-colors">Production Terms (PDF)</a></li>
-                        <li><a href="#" class="hover:text-ochre transition-colors">Sustainability Charter</a></li>
-                        <li><a href="#" class="hover:text-ochre transition-colors">Privacy Policy</a></li>
-                    </ul>
-                </div>
+      var inv = ss.getSheetByName('Inventory');
+      if (inv.getLastRow() === 0)
+        inv.appendRow(['Product','Units Ordered','Logged At']);
+      JSON.parse(d.items).forEach(function(item) {
+        inv.appendRow([item.name, item.qty, new Date()]);
+      });
+    }
 
-            </div>
-            
-            <div class="max-w-7xl mx-auto px-6 md:px-12 mt-16 pt-8 border-t border-indigo/50 flex flex-col md:flex-row justify-between items-center text-xs text-linen/40">
-                <p>&copy; 2026 Kina Studio Confecciones S.A.S. All rights reserved.</p>
-                <p class="mt-2 md:mt-0 font-mono text-[10px]">VER 1.0.4 // MED</p>
-            </div>
-        </footer>
+    return ContentService
+      .createTextOutput(JSON.stringify({status:'ok'}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({status:'error',msg:err.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}</pre>
+                    </div>
+                </div>
+            </details>
+        </section>
     </main>
 
+    <!-- FOOTER -->
+    <footer class="bg-ink text-linen/70 py-16 border-t border-indigo">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 text-sm font-light">
+            <div class="md:col-span-1">
+                <span class="font-serif text-2xl tracking-wide text-linen block mb-4">Kina</span>
+                <p class="leading-relaxed text-xs">Precision B2B clothing confection.<br>Grounded in Colombian craft.<br>Engineered for global standards.</p>
+            </div>
+            <div>
+                <h4 class="text-xs uppercase tracking-widest text-linen font-medium mb-6">Headquarters</h4>
+                <address class="not-italic text-xs space-y-1">Cra. 48 #26-85, Industrial Hub<br>Medellín, Antioquia<br>Colombia (CO)</address>
+            </div>
+            <div>
+                <h4 class="text-xs uppercase tracking-widest text-linen font-medium mb-6">Contact</h4>
+                <ul class="text-xs space-y-2">
+                    <li><a href="mailto:partners@kinastudio.co" class="hover:text-ochre transition-colors">partners@kinastudio.co</a></li>
+                    <li><a href="https://wa.me/573005550192" class="hover:text-ochre transition-colors">+57 (300) 555-0192</a></li>
+                    <li>Mon–Fri, 08:00–17:00 COT</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xs uppercase tracking-widest text-linen font-medium mb-6">Legal &amp; Specs</h4>
+                <ul class="text-xs space-y-2">
+                    <li><a href="#" class="hover:text-ochre transition-colors">Production Terms (PDF)</a></li>
+                    <li><a href="#" class="hover:text-ochre transition-colors">Sustainability Charter</a></li>
+                    <li><a href="#" class="hover:text-ochre transition-colors">Privacy Policy</a></li>
+                    <li><button onclick="toggleInventory()" class="hover:text-ochre transition-colors text-left">Inventory Admin ↗</button></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 md:px-12 mt-16 pt-8 border-t border-indigo/50 flex flex-col md:flex-row justify-between items-center text-xs text-linen/40">
+            <p>&copy; 2026 Kina Studio Confecciones S.A.S. All rights reserved.</p>
+            <p class="mt-2 md:mt-0 font-mono text-[10px]">VER 2.0.0 // MED</p>
+        </div>
+    </footer>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Setup Intersection Observer for the "sewing machine" rhythmic reveal animations
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px 0px -10% 0px', // Trigger slightly before the element comes fully into view
-                threshold: 0.1
-            };
+    // ── CONFIG ─────────────────────────────────────────────────
+    // Paste your Google Apps Script deployment URL here after setup
+    const APPS_SCRIPT_URL = '';
 
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Add class to trigger CSS transition
-                        entry.target.classList.add('is-visible');
-                        // Stop observing once revealed
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
+    // ── PRODUCTS ───────────────────────────────────────────────
+    const PRODUCTS = [
+        { id:'tee-001', name:'Classic Jersey T-Shirt', category:'Basics', price:18500, minQty:50, stock:2000,
+          img:'https://placehold.co/480x560/EAE8E3/4A4F55?text=Classic+T-Shirt',
+          desc:'180gsm combed cotton. Crew neck, set-in sleeve. Available in 15 colorways.',
+          specs:['180gsm Combed Cotton','Sizes XS–3XL','MOQ: 50 units'] },
+        { id:'hoodie-001', name:'French Terry Hoodie', category:'Sweatshirts', price:45000, minQty:30, stock:800,
+          img:'https://placehold.co/480x560/2A3441/EAE8E3?text=French+Terry+Hoodie',
+          desc:'320gsm French terry loop. Kangaroo pocket, ribbed cuffs and hem.',
+          specs:['320gsm French Terry','Sizes XS–2XL','MOQ: 30 units'] },
+        { id:'chino-001', name:'Slim-Cut Chino Trouser', category:'Bottoms', price:52000, minQty:40, stock:600,
+          img:'https://placehold.co/480x560/C48C5E/F7F5F0?text=Slim+Chino',
+          desc:'98% Cotton 2% Elastane twill. YKK hardware. Slim taper from seat to ankle.',
+          specs:['98% Cotton / 2% Elastane','Sizes 28–40','MOQ: 40 units'] },
+        { id:'jacket-001', name:'Structured Denim Jacket', category:'Outerwear', price:78000, minQty:25, stock:400,
+          img:'https://placehold.co/480x560/1C2026/EAE8E3?text=Denim+Jacket',
+          desc:'12oz selvedge denim. Structured shoulder, chest pockets, brass hardware.',
+          specs:['12oz Selvedge Denim','Sizes XS–XL','MOQ: 25 units'] },
+        { id:'polo-001', name:'Mercerized Polo Shirt', category:'Formal', price:28500, minQty:50, stock:1200,
+          img:'https://placehold.co/480x560/E2C2B3/1C2026?text=Polo+Shirt',
+          desc:'220gsm mercerized piqué. 3-button placket. Ideal for corporate branding.',
+          specs:['220gsm Mercerized Piqué','Sizes XS–3XL','MOQ: 50 units'] },
+        { id:'cargo-001', name:'Technical Cargo Short', category:'Bottoms', price:35000, minQty:40, stock:700,
+          img:'https://placehold.co/480x560/4A4F55/F7F5F0?text=Cargo+Short',
+          desc:'210gsm ripstop nylon. 6 pockets, zip details. DWR water-resistant finish.',
+          specs:['210gsm Ripstop Nylon','Sizes 28–38','MOQ: 40 units'] }
+    ];
 
-            // Select all elements with the reveal class and observe them
-            const revealElements = document.querySelectorAll('.reveal-element');
-            revealElements.forEach(el => observer.observe(el));
+    // ── INVENTORY STATE ─────────────────────────────────────────
+    const inventory = {};
+    PRODUCTS.forEach(p => { inventory[p.id] = { stock: p.stock, ordered: 0 }; });
 
-            // Header behavior: slightly minimize padding on scroll to maximize screen real estate
-            const header = document.getElementById('main-header');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    header.classList.add('shadow-sm');
-                    header.firstElementChild.classList.remove('h-20');
-                    header.firstElementChild.classList.add('h-16');
-                } else {
-                    header.classList.remove('shadow-sm');
-                    header.firstElementChild.classList.remove('h-16');
-                    header.firstElementChild.classList.add('h-20');
-                }
-            });
+    // ── CART STATE ──────────────────────────────────────────────
+    let cart = [];
+
+    function formatCOP(n) {
+        return '$' + Math.round(n).toLocaleString('es-CO') + ' COP';
+    }
+
+    // ── RENDER PRODUCTS ─────────────────────────────────────────
+    function renderProducts() {
+        const grid = document.getElementById('products-grid');
+        grid.innerHTML = '';
+        PRODUCTS.forEach(p => {
+            const remaining = inventory[p.id].stock - inventory[p.id].ordered;
+            const inStock = remaining > 0;
+            const card = document.createElement('div');
+            card.className = 'bg-linen border border-concrete hover:shadow-md transition-shadow flex flex-col';
+            card.innerHTML = `
+                <div class="relative overflow-hidden flex-shrink-0">
+                    <img src="${p.img}" alt="${p.name}" class="w-full aspect-[4/5] object-cover material-img">
+                    <span class="absolute top-3 left-3 bg-linen/90 text-xs uppercase tracking-widest px-2 py-1 text-graphite">${p.category}</span>
+                    <span class="absolute top-3 right-3 text-[10px] font-mono ${inStock ? 'text-green-700' : 'text-red-600'} bg-linen/90 px-2 py-1">${inStock ? '● In Stock' : '○ Low Stock'}</span>
+                </div>
+                <div class="p-5 flex flex-col flex-1">
+                    <h3 class="font-serif text-xl text-ink mb-1">${p.name}</h3>
+                    <p class="text-xs text-graphite font-light mb-3 leading-relaxed">${p.desc}</p>
+                    <ul class="text-xs text-graphite space-y-1 mb-4">
+                        ${p.specs.map(s => `<li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-ochre flex-shrink-0"></div>${s}</li>`).join('')}
+                    </ul>
+                    <div class="flex items-end justify-between mb-4 pt-3 border-t border-concrete">
+                        <div>
+                            <span class="text-[10px] text-graphite uppercase tracking-wider">From</span>
+                            <div class="font-serif text-lg text-ink">${formatCOP(p.price)}<span class="text-xs text-graphite font-sans font-light"> /unit</span></div>
+                        </div>
+                        <span class="text-xs text-graphite">Min. ${p.minQty} units</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="text-[10px] uppercase tracking-widest text-graphite font-medium block mb-1">Your Logo (optional)</label>
+                        <div class="logo-upload-area" onclick="document.getElementById('logo-${p.id}').click()">
+                            <img id="logo-preview-${p.id}" class="logo-preview hidden" src="" alt="Logo">
+                            <span id="logo-placeholder-${p.id}" class="text-[10px] text-graphite">Click to upload PNG / SVG</span>
+                        </div>
+                        <input type="file" id="logo-${p.id}" accept="image/*,.svg" class="hidden" onchange="handleLogoUpload('${p.id}',this)">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="text-[10px] uppercase tracking-widest text-graphite font-medium block mb-1">Units Required</label>
+                        <div class="flex items-center border border-concrete">
+                            <button onclick="changeQty('${p.id}',-${p.minQty})" class="px-3 py-2 text-graphite hover:bg-concrete transition-colors select-none">−</button>
+                            <input type="number" id="qty-${p.id}" value="${p.minQty}" min="${p.minQty}" class="flex-1 text-center py-2 bg-transparent text-sm font-light focus:outline-none" readonly>
+                            <button onclick="changeQty('${p.id}',${p.minQty})" class="px-3 py-2 text-graphite hover:bg-concrete transition-colors select-none">+</button>
+                        </div>
+                        <p class="text-[10px] text-graphite mt-1 text-center" id="line-total-${p.id}">Total: ${formatCOP(p.price * p.minQty)}</p>
+                    </div>
+
+                    <button onclick="addToCart('${p.id}')" class="mt-auto w-full py-3 bg-ink text-linen text-xs uppercase tracking-widest hover:bg-ochre transition-colors duration-200">
+                        Add to Cart
+                    </button>
+                </div>`;
+            grid.appendChild(card);
         });
+    }
+
+    // ── LOGO UPLOAD ─────────────────────────────────────────────
+    function handleLogoUpload(id, input) {
+        if (!input.files || !input.files[0]) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById(`logo-preview-${id}`).src = e.target.result;
+            document.getElementById(`logo-preview-${id}`).classList.remove('hidden');
+            document.getElementById(`logo-placeholder-${id}`).textContent = 'Click to change';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+
+    // ── QTY CONTROLS ────────────────────────────────────────────
+    function changeQty(id, delta) {
+        const p = PRODUCTS.find(x => x.id === id);
+        const input = document.getElementById(`qty-${id}`);
+        const next = Math.max(p.minQty, parseInt(input.value) + delta);
+        input.value = next;
+        document.getElementById(`line-total-${id}`).textContent = 'Total: ' + formatCOP(p.price * next);
+    }
+
+    // ── CART ─────────────────────────────────────────────────────
+    function addToCart(id) {
+        const p = PRODUCTS.find(x => x.id === id);
+        const qty = parseInt(document.getElementById(`qty-${id}`).value);
+        const logoEl = document.getElementById(`logo-preview-${id}`);
+        const logo = logoEl && !logoEl.classList.contains('hidden') ? logoEl.src : null;
+        const existing = cart.find(i => i.id === id);
+        if (existing) { existing.qty += qty; } else { cart.push({ id, name: p.name, price: p.price, qty, logo }); }
+        updateCartUI();
+        if (!document.getElementById('cart-sidebar').classList.contains('open')) toggleCart();
+        showToast(`${p.name} added to cart`);
+    }
+
+    function removeFromCart(id) { cart = cart.filter(i => i.id !== id); updateCartUI(); }
+    function clearCart() { cart = []; updateCartUI(); }
+    function getCartTotal() { return cart.reduce((s, i) => s + i.price * i.qty, 0); }
+
+    function updateCartUI() {
+        const total = cart.reduce((s, i) => s + i.qty, 0);
+        const countEl = document.getElementById('cart-count');
+        countEl.textContent = total > 99 ? '99+' : total;
+        countEl.style.display = total > 0 ? 'flex' : 'none';
+
+        const itemsEl = document.getElementById('cart-items');
+        const footer = document.getElementById('cart-footer');
+
+        if (cart.length === 0) {
+            itemsEl.innerHTML = '<p class="text-graphite text-sm font-light text-center py-16">No items added yet.</p>';
+            footer.classList.add('hidden');
+            return;
+        }
+        footer.classList.remove('hidden');
+        itemsEl.innerHTML = cart.map(item => `
+            <div class="flex gap-3 mb-4 pb-4 border-b border-concrete last:border-0">
+                ${item.logo ? `<img src="${item.logo}" class="w-12 h-12 object-contain border border-concrete flex-shrink-0 p-1 bg-white">` : `<div class="w-12 h-12 bg-concrete flex-shrink-0"></div>`}
+                <div class="flex-1 min-w-0">
+                    <div class="flex justify-between items-start gap-2">
+                        <span class="text-sm font-medium text-ink leading-tight">${item.name}</span>
+                        <button onclick="removeFromCart('${item.id}')" class="text-graphite hover:text-ink text-xs flex-shrink-0 mt-0.5">✕</button>
+                    </div>
+                    <span class="text-xs text-graphite">${item.qty.toLocaleString('es-CO')} units × ${formatCOP(item.price)}</span>
+                    <div class="text-xs font-medium text-ink mt-0.5">${formatCOP(item.price * item.qty)}</div>
+                </div>
+            </div>`).join('');
+        document.getElementById('cart-subtotal').textContent = formatCOP(getCartTotal());
+    }
+
+    function toggleCart() {
+        const sidebar = document.getElementById('cart-sidebar');
+        const backdrop = document.getElementById('cart-backdrop');
+        const open = sidebar.classList.toggle('open');
+        backdrop.classList.toggle('open', open);
+        document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    // ── PAYMENT MODAL ────────────────────────────────────────────
+    function openPaymentModal() {
+        if (document.getElementById('cart-sidebar').classList.contains('open')) toggleCart();
+        const summary = document.getElementById('order-summary');
+        summary.innerHTML = `
+            <p class="text-[10px] uppercase tracking-wider text-graphite font-medium mb-3">Order Summary</p>
+            ${cart.map(i => `<div class="flex justify-between text-sm mb-1"><span class="text-graphite font-light">${i.name} × ${i.qty.toLocaleString('es-CO')}</span><span class="text-ink">${formatCOP(i.price*i.qty)}</span></div>`).join('')}
+            <div class="flex justify-between font-medium pt-2 mt-2 border-t border-concrete text-sm"><span>Total</span><span class="font-serif text-base">${formatCOP(getCartTotal())}</span></div>`;
+        document.getElementById('payment-success').classList.add('hidden');
+        document.getElementById('payment-btn-area').classList.remove('hidden');
+        document.getElementById('mp-card-form').classList.remove('hidden');
+        document.getElementById('pay-btn').textContent = 'Confirm Order — Demo';
+        document.getElementById('pay-btn').disabled = false;
+        document.getElementById('payment-modal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closePaymentModal() {
+        document.getElementById('payment-modal').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    function processPayment() {
+        const email = document.getElementById('checkout-email').value.trim();
+        const brand = document.getElementById('checkout-brand').value.trim();
+        const cardNum = document.getElementById('card-number').value.replace(/\s/g,'');
+        if (!email || !brand) { showToast('Please enter email and brand name'); return; }
+        if (cardNum.length < 13) { showToast('Please enter a valid card number'); return; }
+
+        const btn = document.getElementById('pay-btn');
+        btn.textContent = 'Processing...';
+        btn.disabled = true;
+
+        setTimeout(() => {
+            cart.forEach(item => { inventory[item.id].ordered += item.qty; });
+            renderInventoryTable();
+            sendToSheets({ type:'order', brand, email, items: JSON.stringify(cart.map(i=>({name:i.name,qty:i.qty}))), total: getCartTotal() });
+            document.getElementById('payment-success').classList.remove('hidden');
+            document.getElementById('payment-btn-area').classList.add('hidden');
+            document.getElementById('mp-card-form').classList.add('hidden');
+            clearCart();
+        }, 1800);
+    }
+
+    // ── GOOGLE SHEETS ────────────────────────────────────────────
+    function sendToSheets(data) {
+        if (!APPS_SCRIPT_URL) { console.log('[Kina Studio] Sheets not connected. Would have sent:', data); return; }
+        fetch(APPS_SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) })
+            .catch(err => console.error('Sheets sync:', err));
+    }
+
+    // ── INQUIRY FORM ─────────────────────────────────────────────
+    document.getElementById('inquiry-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('inquiry-submit-btn');
+        btn.textContent = 'Sending...'; btn.disabled = true;
+        const data = { type:'inquiry' };
+        new FormData(this).forEach((v, k) => { data[k] = v; });
+        sendToSheets(data);
+        setTimeout(() => {
+            this.classList.add('hidden');
+            document.getElementById('inquiry-success').classList.remove('hidden');
+            btn.textContent = 'Submit Inquiry'; btn.disabled = false;
+        }, 800);
+    });
+
+    function resetInquiryForm() {
+        document.getElementById('inquiry-form').reset();
+        document.getElementById('inquiry-form').classList.remove('hidden');
+        document.getElementById('inquiry-success').classList.add('hidden');
+    }
+
+    // ── INVENTORY ADMIN ──────────────────────────────────────────
+    function renderInventoryTable() {
+        const tbody = document.getElementById('inventory-table-body');
+        if (!tbody) return;
+        tbody.innerHTML = PRODUCTS.map(p => {
+            const inv = inventory[p.id];
+            const rem = inv.stock - inv.ordered;
+            const pct = rem / inv.stock;
+            const [status, color] = pct > 0.5 ? ['● Available','color:#15803d'] : pct > 0.1 ? ['◐ Low Stock','color:#C48C5E'] : ['○ Critical','color:#dc2626'];
+            return `<tr>
+                <td class="py-3 pr-8 text-sm text-ink">${p.name}</td>
+                <td class="py-3 pr-8 text-sm text-graphite font-light">${inv.stock.toLocaleString('es-CO')}</td>
+                <td class="py-3 pr-8 text-sm text-graphite font-light">${inv.ordered.toLocaleString('es-CO')}</td>
+                <td class="py-3 pr-8 text-sm font-medium text-ink">${rem.toLocaleString('es-CO')}</td>
+                <td class="py-3 text-xs font-medium" style="${color}">${status}</td>
+            </tr>`;
+        }).join('');
+    }
+
+    function toggleInventory() {
+        const s = document.getElementById('inventory-section');
+        s.classList.toggle('visible');
+        if (s.classList.contains('visible')) { renderInventoryTable(); s.scrollIntoView({behavior:'smooth',block:'start'}); }
+    }
+
+    // ── SHEETS NOTICE ─────────────────────────────────────────────
+    function checkSheetsConnection() {
+        if (APPS_SCRIPT_URL) { const n = document.getElementById('sheets-notice'); if(n) n.remove(); }
+    }
+
+    // ── TOAST ─────────────────────────────────────────────────────
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg; t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    // ── INIT ──────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+        checkSheetsConnection();
+        renderProducts();
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); } });
+        }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+        document.querySelectorAll('.reveal-element').forEach(el => observer.observe(el));
+
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('shadow-sm');
+                header.firstElementChild.classList.remove('h-20');
+                header.firstElementChild.classList.add('h-16');
+            } else {
+                header.classList.remove('shadow-sm');
+                header.firstElementChild.classList.remove('h-16');
+                header.firstElementChild.classList.add('h-20');
+            }
+        });
+
+        document.getElementById('card-number').addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim().slice(0,19);
+        });
+        document.getElementById('card-expiry').addEventListener('input', function() {
+            let v = this.value.replace(/\D/g,'');
+            if (v.length >= 3) v = v.slice(0,2)+'/'+v.slice(2,4);
+            this.value = v;
+        });
+    });
     </script>
 </body>
 </html>
+
