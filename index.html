@@ -776,9 +776,13 @@
 
     // ── GOOGLE SHEETS ────────────────────────────────────────────
     function sendToSheets(data) {
-        if (!APPS_SCRIPT_URL) { console.log('[Kina Studio] Sheets not connected. Would have sent:', data); return; }
-        fetch(APPS_SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) })
-            .catch(err => console.error('Sheets sync:', err));
+        if (!APPS_SCRIPT_URL) { console.log('[Kina Studio] Sheets not connected:', data); return; }
+        // text/plain avoids CORS preflight — Apps Script reads e.postData.contents regardless of content-type
+        fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify(data)
+        }).catch(() => {});
     }
 
     // ── INQUIRY FORM ─────────────────────────────────────────────
