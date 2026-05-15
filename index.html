@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://picsum.photos">
+    <link rel="dns-prefetch" href="https://picsum.photos">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -28,11 +30,19 @@
     </script>
     <style>
         body { background-color: #F7F5F0; color: #1C2026; overflow-x: hidden; }
-        .reveal-element { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94); }
+        /* Slide-in animations — up (default), left, right */
+        .reveal-element { opacity: 0; transform: translateY(16px); transition: opacity 0.45s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94); }
         .reveal-element.is-visible { opacity: 1; transform: translateY(0); }
-        .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; }
+        .reveal-left { opacity: 0; transform: translateX(-28px); transition: opacity 0.45s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94); }
+        .reveal-left.is-visible { opacity: 1; transform: translateX(0); }
+        .reveal-right { opacity: 0; transform: translateX(28px); transition: opacity 0.45s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94); }
+        .reveal-right.is-visible { opacity: 1; transform: translateX(0); }
+        .delay-100 { transition-delay: 50ms; }
+        .delay-200 { transition-delay: 100ms; }
+        .delay-300 { transition-delay: 150ms; }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal-element, .reveal-left, .reveal-right { opacity: 1 !important; transform: none !important; transition: none !important; }
+        }
         .stitch-border { border: 1px dashed #E2C2B3; }
         .solid-border { border: 1px solid #EAE8E3; }
         .material-img { filter: contrast(0.95) saturate(0.85); transition: filter 0.5s ease; }
@@ -96,6 +106,31 @@
 
         /* Demo banner */
         .demo-banner { background: #C48C5E; color: #F7F5F0; font-size: 10px; text-align: center; letter-spacing: 0.18em; text-transform: uppercase; padding: 7px; font-family: 'Inter', sans-serif; }
+
+        /* Static edges — prevent horizontal scroll/shift */
+        html, body { overflow-x: hidden; }
+
+        /* Mobile: cart full-width, modal bottom sheet */
+        @media (max-width: 639px) {
+            #cart-sidebar { width: 100%; right: -100%; }
+            #cart-sidebar.open { right: 0; }
+            #payment-modal { align-items: flex-end; }
+            #payment-modal-box { width: 100%; max-height: 92vh; padding: 1.5rem; border: none; border-top: 1px solid #EAE8E3; }
+        }
+
+        /* Mobile nav overlay */
+        #mobile-nav { display: none; position: fixed; inset: 0; background: #F7F5F0; z-index: 90; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; }
+        #mobile-nav.open { display: flex; }
+        #mobile-nav a { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: #1C2026; text-decoration: none; letter-spacing: 0.05em; transition: color 0.2s; }
+        #mobile-nav a:hover { color: #C48C5E; }
+        #mobile-nav-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; cursor: pointer; color: #4A4F55; }
+
+        /* Hamburger — hidden on desktop */
+        #hamburger { display: none; background: none; border: none; cursor: pointer; color: #4A4F55; padding: 4px; }
+        @media (max-width: 767px) {
+            #hamburger { display: flex; align-items: center; justify-content: center; }
+            #lang-switcher { display: block !important; }
+        }
     </style>
     <script type="text/javascript">
         function googleTranslateElementInit() {
@@ -106,6 +141,18 @@
 </head>
 
 <body class="antialiased selection:bg-ochre selection:text-linen font-sans">
+
+    <!-- Mobile Nav Overlay -->
+    <div id="mobile-nav" role="dialog" aria-label="Mobile navigation">
+        <button id="mobile-nav-close" onclick="toggleMobileNav()" aria-label="Close menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <a href="#atelier" onclick="toggleMobileNav()">The Atelier</a>
+        <a href="#capabilities" onclick="toggleMobileNav()">Capabilities</a>
+        <a href="#materials" onclick="toggleMobileNav()">Sourcing</a>
+        <a href="#products" onclick="toggleMobileNav()">Products</a>
+        <a href="#partner" onclick="toggleMobileNav()" style="font-size:1.1rem;letter-spacing:0.12em;text-transform:uppercase;font-family:'Inter',sans-serif;font-size:0.8rem;">Partner Inquiries →</a>
+    </div>
 
     <!-- Demo Banner -->
     <div class="demo-banner">Demo Website — Products &amp; Checkout Are Simulated for Presentation Purposes</div>
@@ -212,13 +259,17 @@
                 <span class="font-serif text-2xl tracking-wide text-ink font-medium">Kina</span>
                 <span class="text-xs uppercase tracking-[0.2em] text-graphite mt-1 hidden sm:block">Studio Medellín</span>
             </div>
-            <nav class="hidden md:flex gap-8 text-xs uppercase tracking-widest font-medium text-graphite">
+            <nav class="hidden md:flex gap-8 text-xs uppercase tracking-widest font-medium text-graphite" id="desktop-nav">
                 <a href="#atelier" class="hover:text-ochre transition-colors">The Atelier</a>
                 <a href="#capabilities" class="hover:text-ochre transition-colors">Capabilities</a>
                 <a href="#materials" class="hover:text-ochre transition-colors">Sourcing</a>
                 <a href="#products" class="hover:text-ochre transition-colors">Products</a>
             </nav>
             <div class="flex items-center gap-4">
+                <!-- Hamburger — mobile only -->
+                <button id="hamburger" onclick="toggleMobileNav()" aria-label="Open menu">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+                </button>
                 <!-- Custom language switcher (triggers hidden Google Translate) -->
                 <div id="lang-switcher" class="hidden md:block">
                     <button id="lang-trigger" onclick="toggleLangMenu()">
@@ -252,7 +303,7 @@
         <!-- HERO -->
         <section class="relative pt-44 pb-20 md:pt-56 md:pb-32 px-6 md:px-12 max-w-7xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 items-center">
-                <div class="md:col-span-7 z-10 reveal-element">
+                <div class="md:col-span-7 z-10 reveal-element is-visible">
                     <div class="flex items-center gap-4 mb-6">
                         <div class="w-12 h-[1px] bg-ochre"></div>
                         <span class="text-xs uppercase tracking-[0.2em] text-ochre font-medium">B2B Confection &amp; Manufacturing</span>
@@ -269,9 +320,9 @@
                         <a href="#capabilities" class="inline-flex justify-center items-center px-8 py-4 bg-transparent border border-ink text-ink text-sm uppercase tracking-widest hover:bg-ink hover:text-linen transition-colors rounded-sm">Explore Capabilities</a>
                     </div>
                 </div>
-                <div class="md:col-span-5 relative mt-12 md:mt-0 reveal-element delay-200">
+                <div class="md:col-span-5 relative mt-12 md:mt-0 reveal-element is-visible">
                     <div class="aspect-[3/4] relative z-10">
-                        <img src="https://placehold.co/600x800/EAE8E3/4A4F55?text=Textile+Stacks%0AStudio+Floor" alt="Folded textiles in studio" class="w-full h-full object-cover rounded-sm material-img shadow-lg shadow-concrete/50">
+                        <img src="https://placehold.co/600x800/EAE8E3/4A4F55?text=Textile+Stacks%0AStudio+Floor" alt="Folded textiles in studio" class="w-full h-full object-cover rounded-sm material-img shadow-lg shadow-concrete/50" loading="eager" decoding="async">
                     </div>
                     <div class="absolute -bottom-8 -left-8 w-2/3 aspect-square bg-blush/20 border border-blush z-0 hidden md:block"></div>
                 </div>
@@ -298,7 +349,7 @@
                 <p class="text-graphite font-light text-sm max-w-sm md:text-right">Structured processes designed for scale, executed with the meticulous care of a sample room.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-0 solid-border bg-linen">
-                <div class="p-10 border-b md:border-b-0 md:border-r border-concrete hover:bg-concrete/30 transition-colors reveal-element delay-100 group">
+                <div class="p-10 border-b md:border-b-0 md:border-r border-concrete hover:bg-concrete/30 transition-colors reveal-left delay-100 group">
                     <div class="text-xs text-graphite mb-8 font-mono">SEC. 01</div>
                     <h3 class="font-serif text-2xl text-ink mb-4 group-hover:text-ochre transition-colors">Technical Development</h3>
                     <p class="text-graphite font-light text-sm leading-relaxed mb-8">From raw concept to production-ready tech packs. We digitize patterns, grade with surgical precision, and iterate samples until the fit aligns perfectly with your brand architecture.</p>
@@ -308,7 +359,7 @@
                         <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-ochre"></div>Prototype &amp; Fit Sampling</li>
                     </ul>
                 </div>
-                <div class="p-10 border-b md:border-b-0 md:border-r border-concrete hover:bg-concrete/30 transition-colors reveal-element delay-200 group">
+                <div class="p-10 border-b md:border-b-0 md:border-r border-concrete hover:bg-concrete/30 transition-colors reveal-element delay-100 group">
                     <div class="text-xs text-graphite mb-8 font-mono">SEC. 02</div>
                     <h3 class="font-serif text-2xl text-ink mb-4 group-hover:text-indigo transition-colors">Cut &amp; Sew Manufacturing</h3>
                     <p class="text-graphite font-light text-sm leading-relaxed mb-8">Scalable production runs that do not compromise on finish. Our floor is optimized for mid-to-large volume orders, maintaining strict tolerances on every batch.</p>
@@ -318,7 +369,7 @@
                         <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-indigo"></div>Hand-finished Detailing</li>
                     </ul>
                 </div>
-                <div class="p-10 hover:bg-concrete/30 transition-colors reveal-element delay-300 group">
+                <div class="p-10 hover:bg-concrete/30 transition-colors reveal-right delay-100 group">
                     <div class="text-xs text-graphite mb-8 font-mono">SEC. 03</div>
                     <h3 class="font-serif text-2xl text-ink mb-4 group-hover:text-blush transition-colors">Quality Assurance</h3>
                     <p class="text-graphite font-light text-sm leading-relaxed mb-8">A rigorous, multi-stage inspection protocol. We view QC not as a final step, but as a continuous thread running through the entire manufacturing lifecycle.</p>
@@ -335,16 +386,16 @@
         <section id="materials" class="py-24 md:py-32 bg-indigo text-linen overflow-hidden">
             <div class="max-w-7xl mx-auto px-6 md:px-12">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-                    <div class="order-2 lg:order-1 relative reveal-element">
+                    <div class="order-2 lg:order-1 relative reveal-left">
                         <div class="aspect-square bg-ink rounded-sm overflow-hidden relative">
-                            <img src="https://placehold.co/800x800/1A202C/EAE8E3?text=Indigo+Dye%0AProcess" alt="Indigo dyed fabric" class="w-full h-full object-cover opacity-80 mix-blend-luminosity hover:mix-blend-normal transition-all duration-700">
+                            <img src="https://placehold.co/800x800/1A202C/EAE8E3?text=Indigo+Dye%0AProcess" alt="Indigo dyed fabric" class="w-full h-full object-cover opacity-80 mix-blend-luminosity hover:mix-blend-normal transition-all duration-700" loading="lazy" decoding="async">
                             <div class="absolute bottom-6 right-6 w-32 h-40 bg-ochre p-4 shadow-xl flex flex-col justify-end">
                                 <span class="font-mono text-[10px] text-linen/70">SWATCH 04</span>
                                 <span class="text-sm font-medium text-linen mt-1">Raw Cotton</span>
                             </div>
                         </div>
                     </div>
-                    <div class="order-1 lg:order-2 reveal-element delay-100">
+                    <div class="order-1 lg:order-2 reveal-right delay-100">
                         <span class="text-xs uppercase tracking-[0.2em] text-blush font-medium block mb-6">Material Landscape</span>
                         <h2 class="font-serif text-4xl md:text-5xl leading-tight mb-8">Grounded in the story of craft. Sourced with global responsibility.</h2>
                         <p class="font-light text-linen/80 text-lg leading-relaxed mb-8">We leverage Colombia's strategic position and rich textile history to source premium materials—from native raw cottons to technical synthetics.</p>
@@ -609,7 +660,7 @@
             card.className = 'bg-linen border border-concrete hover:shadow-md transition-shadow flex flex-col';
             card.innerHTML = `
                 <div class="relative overflow-hidden flex-shrink-0">
-                    <img src="${p.img}" alt="${p.name}" class="w-full aspect-[4/5] object-cover material-img" onerror="this.onerror=null;this.src='https://placehold.co/600x750/EAE8E3/4A4F55?text=${encodeURIComponent(p.name)}'">
+                    <img src="${p.img}" alt="${p.name}" class="w-full aspect-[4/5] object-cover material-img" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://placehold.co/600x750/EAE8E3/4A4F55?text=${encodeURIComponent(p.name)}'">
                     <span class="absolute top-3 left-3 bg-linen/90 text-xs uppercase tracking-widest px-2 py-1 text-graphite">${p.category}</span>
                     <span class="absolute top-3 right-3 text-[10px] font-mono ${inStock ? 'text-green-700' : 'text-red-600'} bg-linen/90 px-2 py-1">${inStock ? '● In Stock' : '○ Low Stock'}</span>
                 </div>
@@ -831,6 +882,13 @@
         if (s.classList.contains('visible')) { renderInventoryTable(); s.scrollIntoView({behavior:'smooth',block:'start'}); }
     }
 
+    // ── MOBILE NAV ───────────────────────────────────────────────
+    function toggleMobileNav() {
+        const nav = document.getElementById('mobile-nav');
+        const open = nav.classList.toggle('open');
+        document.body.style.overflow = open ? 'hidden' : '';
+    }
+
     // ── LANGUAGE SWITCHER ────────────────────────────────────────
     function toggleLangMenu() {
         document.getElementById('lang-menu').classList.toggle('open');
@@ -888,8 +946,8 @@
 
         const observer = new IntersectionObserver((entries, obs) => {
             entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); } });
-        }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
-        document.querySelectorAll('.reveal-element').forEach(el => observer.observe(el));
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        document.querySelectorAll('.reveal-element, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
 
         const header = document.getElementById('main-header');
         window.addEventListener('scroll', () => {
